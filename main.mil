@@ -1,0 +1,3277 @@
+_WriteVirtualPorts:
+  begin
+//pins.h,41 :: 		PORTA = PORTA_V;
+	PORTA <- _PORTA_V
+//pins.h,43 :: 		PORTE = PORTE_V;
+	PORTE <- _PORTE_V
+  end
+
+_strcp_c:
+  begin
+//functions.h,5 :: 		unsigned short i = 0;
+	strcp_c_i_L0 <- 0
+//functions.h,7 :: 		do
+L_strcp_c_0:
+//functions.h,9 :: 		str1[i] = cstr2[i];
+	STACK_2 <-  FARG_strcp_c+0 + strcp_c_i_L0
+	STACK_0 <-  FARG_strcp_c+1 + strcp_c_i_L0
+	STACK_0 <- *STACK_0
+	*STACK_2 <- STACK_0
+//functions.h,11 :: 		while (str1[i++]);
+	STACK_0 <- strcp_c_i_L0
+	strcp_c_i_L0 <-  strcp_c_i_L0 + 1
+	strcp_c_i_L0 <- strcp_c_i_L0
+	FSR <-  FARG_strcp_c+0 + STACK_0
+	STACK_0 <- *FSR
+	if (STACK_0) then goto L_strcp_c_0
+L_strcp_c_1:
+  end
+
+_strcmp_c:
+  begin
+//functions.h,18 :: 		short i = 0;
+	strcmp_c_i_L0 <- 0
+//functions.h,20 :: 		for (;(i==0) || (str2[i-1]!='\n');i++)
+L_strcmp_c_2:
+	if ( strcmp_c_i_L0 = 0) then goto L34_ex_L_strcmp_c_3
+	STACK_0 <-  strcmp_c_i_L0 - 1
+	STACK_0 <-  FARG_strcmp_c+1 + STACK_0
+	STACK_2 <- *STACK_0
+	if ( STACK_2 = 10) then goto L_strcmp_c_3
+L34_ex_L_strcmp_c_3:
+//functions.h,22 :: 		if (str1[i] != str2[i]) return 0;
+	FSR <-  FARG_strcmp_c+0 + strcmp_c_i_L0
+	STACK_3 <- *FSR
+	STACK_0 <-  FARG_strcmp_c+1 + strcmp_c_i_L0
+	STACK_2 <- *STACK_0
+	if ( STACK_3 = STACK_2) then goto L_strcmp_c_7
+	STACK_0 <- 0
+	return
+L_strcmp_c_7:
+//functions.h,23 :: 		}
+L_strcmp_c_4:
+//functions.h,20 :: 		for (;(i==0) || (str2[i-1]!='\n');i++)
+	strcmp_c_i_L0 <-  strcmp_c_i_L0 + 1
+	strcmp_c_i_L0 <- strcmp_c_i_L0
+//functions.h,23 :: 		}
+	goto	L_strcmp_c_2
+L_strcmp_c_3:
+//functions.h,25 :: 		return 1;
+	STACK_0 <- 1
+	return
+  end
+
+_str_starts_with:
+  begin
+//functions.h,32 :: 		short i = 0;
+	str_starts_with_i_L0 <- 0
+//functions.h,34 :: 		for (;(i==0) || (str2[i]!='\n');i++)
+L_str_starts_with_8:
+	if ( str_starts_with_i_L0 = 0) then goto L58_ex_L_str_starts_with_9
+	STACK_0 <-  FARG_str_starts_with+1 + str_starts_with_i_L0
+	STACK_2 <- *STACK_0
+	if ( STACK_2 = 10) then goto L_str_starts_with_9
+L58_ex_L_str_starts_with_9:
+//functions.h,36 :: 		if (str1[i] != str2[i]) return 0;
+	FSR <-  FARG_str_starts_with+0 + str_starts_with_i_L0
+	STACK_3 <- *FSR
+	STACK_0 <-  FARG_str_starts_with+1 + str_starts_with_i_L0
+	STACK_2 <- *STACK_0
+	if ( STACK_3 = STACK_2) then goto L_str_starts_with_13
+	STACK_0 <- 0
+	return
+L_str_starts_with_13:
+//functions.h,37 :: 		}
+L_str_starts_with_10:
+//functions.h,34 :: 		for (;(i==0) || (str2[i]!='\n');i++)
+	str_starts_with_i_L0 <-  str_starts_with_i_L0 + 1
+	str_starts_with_i_L0 <- str_starts_with_i_L0
+//functions.h,37 :: 		}
+	goto	L_str_starts_with_8
+L_str_starts_with_9:
+//functions.h,39 :: 		return 1;
+	STACK_0 <- 1
+	return
+  end
+
+_SendLine:
+  begin
+//functions.h,48 :: 		for (t=0; l[t]!= '\n'; t++) Usart_Write(l[t]);
+	SendLine_t_L0 <- 0
+L_SendLine_14:
+	FSR <-  FARG_SendLine+0 + SendLine_t_L0
+	STACK_1 <- *FSR
+	if ( STACK_1 = 10) then goto L_SendLine_15
+	FSR <-  FARG_SendLine+0 + SendLine_t_L0
+	FARG_Usart_Write+0 <- *FSR
+	FARG_Usart_Write+0 <- FARG_Usart_Write+0
+	CALL _Usart_Write
+L_SendLine_16:
+	SendLine_t_L0 <-  SendLine_t_L0 + 1
+	SendLine_t_L0 <- SendLine_t_L0
+	goto	L_SendLine_14
+L_SendLine_15:
+//functions.h,50 :: 		Usart_Write(13);
+	FARG_Usart_Write+0 <- 13
+	CALL _Usart_Write
+//functions.h,52 :: 		Usart_Write(10);
+	FARG_Usart_Write+0 <- 10
+	CALL _Usart_Write
+  end
+
+_SendConstLine:
+  begin
+//functions.h,62 :: 		for (t=0; l[t]!= '\n'; t++) Usart_Write(l[t]);
+	SendConstLine_t_L0 <- 0
+L_SendConstLine_17:
+	STACK_0 <-  FARG_SendConstLine+0 + SendConstLine_t_L0
+	STACK_2 <- *STACK_0
+	if ( STACK_2 = 10) then goto L_SendConstLine_18
+	STACK_0 <-  FARG_SendConstLine+0 + SendConstLine_t_L0
+	FARG_Usart_Write+0 <- *STACK_0
+	FARG_Usart_Write+0 <- FARG_Usart_Write+0
+	CALL _Usart_Write
+L_SendConstLine_19:
+	SendConstLine_t_L0 <-  SendConstLine_t_L0 + 1
+	SendConstLine_t_L0 <- SendConstLine_t_L0
+	goto	L_SendConstLine_17
+L_SendConstLine_18:
+//functions.h,64 :: 		Usart_Write(13);
+	FARG_Usart_Write+0 <- 13
+	CALL _Usart_Write
+//functions.h,66 :: 		Usart_Write(10);
+	FARG_Usart_Write+0 <- 10
+	CALL _Usart_Write
+  end
+
+_ValidChar:
+  begin
+//functions.h,74 :: 		if (i>31 && i<127) return 1;
+	if ( FARG_ValidChar+0 <= 31) then goto L_ValidChar_22
+	if ( FARG_ValidChar+0 >= 127) then goto L_ValidChar_22
+L118_ex_L_ValidChar_22:
+	STACK_0 <- 1
+	return
+L_ValidChar_22:
+//functions.h,76 :: 		return 0;
+	STACK_0 <- 0
+	return
+  end
+
+_max_long:
+  begin
+//functions.h,81 :: 		if (a>b)
+	if ( FARG_max_long+0 <= FARG_max_long+4) then goto L_max_long_23
+//functions.h,83 :: 		if (a>c) return a; else return c;
+	if ( FARG_max_long+0 <= FARG_max_long+8) then goto L_max_long_24
+	STACK_0 <- FARG_max_long+0
+	return
+L_max_long_24:
+	STACK_0 <- FARG_max_long+8
+	return
+//functions.h,84 :: 		}
+L_max_long_23:
+//functions.h,87 :: 		if (b>c) return b; else return c;
+	if ( FARG_max_long+4 <= FARG_max_long+8) then goto L_max_long_27
+	STACK_0 <- FARG_max_long+4
+	return
+L_max_long_27:
+	STACK_0 <- FARG_max_long+8
+	return
+  end
+
+_Extract_Numeric_Argument:
+  begin
+//functions.h,93 :: 		sum = 0;
+	_sum <- 0
+//functions.h,95 :: 		for (j=start; j<b_i; j++)
+	_j <- FARG_Extract_Numeric_Argument+0
+L_Extract_Numeric_Argument_29:
+	if ( _j >= _b_i) then goto L_Extract_Numeric_Argument_30
+//functions.h,97 :: 		sum = sum * 10 + (b[j] - 48);
+	STACK_0 <-  _sum * 10
+	FSR <-  0 + _j
+	STACK_4 <- *FSR
+	STACK_4 <-  STACK_4 - 48
+	_sum <-  STACK_0 + STACK_4
+	_sum <- _sum
+//functions.h,98 :: 		}
+L_Extract_Numeric_Argument_31:
+//functions.h,95 :: 		for (j=start; j<b_i; j++)
+	_j <-  _j + 1
+	_j <- _j
+//functions.h,98 :: 		}
+	goto	L_Extract_Numeric_Argument_29
+L_Extract_Numeric_Argument_30:
+//functions.h,100 :: 		return sum;
+	STACK_0 <- _sum
+	return
+  end
+
+_ProgramCustomChars:
+  begin
+//lcd.h,4 :: 		Lcd8_Cmd (64);
+	FARG_Lcd8_Cmd+0 <- 64
+	CALL _Lcd8_Cmd
+//lcd.h,8 :: 		Lcd8_Chr_Cp(0b00000100);
+	FARG_Lcd8_Chr_CP+0 <- 4
+	CALL _Lcd8_Chr_CP
+//lcd.h,9 :: 		Lcd8_Chr_Cp(0b00001110);
+	FARG_Lcd8_Chr_CP+0 <- 14
+	CALL _Lcd8_Chr_CP
+//lcd.h,10 :: 		Lcd8_Chr_Cp(0b00010101);
+	FARG_Lcd8_Chr_CP+0 <- 21
+	CALL _Lcd8_Chr_CP
+//lcd.h,11 :: 		Lcd8_Chr_Cp(0b00000100);
+	FARG_Lcd8_Chr_CP+0 <- 4
+	CALL _Lcd8_Chr_CP
+//lcd.h,12 :: 		Lcd8_Chr_Cp(0b00000100);
+	FARG_Lcd8_Chr_CP+0 <- 4
+	CALL _Lcd8_Chr_CP
+//lcd.h,13 :: 		Lcd8_Chr_Cp(0b00000100);
+	FARG_Lcd8_Chr_CP+0 <- 4
+	CALL _Lcd8_Chr_CP
+//lcd.h,14 :: 		Lcd8_Chr_Cp(0b00000100);
+	FARG_Lcd8_Chr_CP+0 <- 4
+	CALL _Lcd8_Chr_CP
+//lcd.h,15 :: 		Lcd8_Chr_Cp(0b00000000);
+	FARG_Lcd8_Chr_CP+0 <- 0
+	CALL _Lcd8_Chr_CP
+//lcd.h,19 :: 		Lcd8_Chr_Cp(0b00000000);
+	FARG_Lcd8_Chr_CP+0 <- 0
+	CALL _Lcd8_Chr_CP
+//lcd.h,20 :: 		Lcd8_Chr_Cp(0b00000100);
+	FARG_Lcd8_Chr_CP+0 <- 4
+	CALL _Lcd8_Chr_CP
+//lcd.h,21 :: 		Lcd8_Chr_Cp(0b00000100);
+	FARG_Lcd8_Chr_CP+0 <- 4
+	CALL _Lcd8_Chr_CP
+//lcd.h,22 :: 		Lcd8_Chr_Cp(0b00000100);
+	FARG_Lcd8_Chr_CP+0 <- 4
+	CALL _Lcd8_Chr_CP
+//lcd.h,23 :: 		Lcd8_Chr_Cp(0b00000100);
+	FARG_Lcd8_Chr_CP+0 <- 4
+	CALL _Lcd8_Chr_CP
+//lcd.h,24 :: 		Lcd8_Chr_Cp(0b00010101);
+	FARG_Lcd8_Chr_CP+0 <- 21
+	CALL _Lcd8_Chr_CP
+//lcd.h,25 :: 		Lcd8_Chr_Cp(0b00001110);
+	FARG_Lcd8_Chr_CP+0 <- 14
+	CALL _Lcd8_Chr_CP
+//lcd.h,26 :: 		Lcd8_Chr_Cp(0b00000100);
+	FARG_Lcd8_Chr_CP+0 <- 4
+	CALL _Lcd8_Chr_CP
+//lcd.h,30 :: 		Lcd8_Chr_Cp(0b00011111);
+	FARG_Lcd8_Chr_CP+0 <- 31
+	CALL _Lcd8_Chr_CP
+//lcd.h,31 :: 		Lcd8_Chr_Cp(0b00010001);
+	FARG_Lcd8_Chr_CP+0 <- 17
+	CALL _Lcd8_Chr_CP
+//lcd.h,32 :: 		Lcd8_Chr_Cp(0b00010001);
+	FARG_Lcd8_Chr_CP+0 <- 17
+	CALL _Lcd8_Chr_CP
+//lcd.h,33 :: 		Lcd8_Chr_Cp(0b00010001);
+	FARG_Lcd8_Chr_CP+0 <- 17
+	CALL _Lcd8_Chr_CP
+//lcd.h,34 :: 		Lcd8_Chr_Cp(0b00010001);
+	FARG_Lcd8_Chr_CP+0 <- 17
+	CALL _Lcd8_Chr_CP
+//lcd.h,35 :: 		Lcd8_Chr_Cp(0b00010001);
+	FARG_Lcd8_Chr_CP+0 <- 17
+	CALL _Lcd8_Chr_CP
+//lcd.h,36 :: 		Lcd8_Chr_Cp(0b00010001);
+	FARG_Lcd8_Chr_CP+0 <- 17
+	CALL _Lcd8_Chr_CP
+//lcd.h,37 :: 		Lcd8_Chr_Cp(0b00011111);
+	FARG_Lcd8_Chr_CP+0 <- 31
+	CALL _Lcd8_Chr_CP
+//lcd.h,41 :: 		Lcd8_Chr_Cp(0b00011111);
+	FARG_Lcd8_Chr_CP+0 <- 31
+	CALL _Lcd8_Chr_CP
+//lcd.h,42 :: 		Lcd8_Chr_Cp(0b00011111);
+	FARG_Lcd8_Chr_CP+0 <- 31
+	CALL _Lcd8_Chr_CP
+//lcd.h,43 :: 		Lcd8_Chr_Cp(0b00011111);
+	FARG_Lcd8_Chr_CP+0 <- 31
+	CALL _Lcd8_Chr_CP
+//lcd.h,44 :: 		Lcd8_Chr_Cp(0b00011111);
+	FARG_Lcd8_Chr_CP+0 <- 31
+	CALL _Lcd8_Chr_CP
+//lcd.h,45 :: 		Lcd8_Chr_Cp(0b00011111);
+	FARG_Lcd8_Chr_CP+0 <- 31
+	CALL _Lcd8_Chr_CP
+//lcd.h,46 :: 		Lcd8_Chr_Cp(0b00011111);
+	FARG_Lcd8_Chr_CP+0 <- 31
+	CALL _Lcd8_Chr_CP
+//lcd.h,47 :: 		Lcd8_Chr_Cp(0b00011111);
+	FARG_Lcd8_Chr_CP+0 <- 31
+	CALL _Lcd8_Chr_CP
+//lcd.h,48 :: 		Lcd8_Chr_Cp(0b00011111);
+	FARG_Lcd8_Chr_CP+0 <- 31
+	CALL _Lcd8_Chr_CP
+//lcd.h,50 :: 		Lcd8_Cmd(Lcd_Return_Home);
+	FARG_Lcd8_Cmd+0 <- 2
+	CALL _Lcd8_Cmd
+  end
+
+_Intialize_LCD:
+  begin
+//lcd.h,55 :: 		Lcd8_Init(&PORTD, &PORTB);
+	FARG_Lcd8_Init+0 <- 0
+	FARG_Lcd8_Init+1 <- 0
+	CALL _Lcd8_Init
+//lcd.h,57 :: 		Lcd8_Cmd(LCD_CURSOR_OFF);
+	FARG_Lcd8_Cmd+0 <- 12
+	CALL _Lcd8_Cmd
+//lcd.h,59 :: 		ProgramCustomChars();
+	CALL _ProgramCustomChars
+//lcd.h,61 :: 		strcp_c(lcd1, lcd1_default);
+	FARG_strcp_c+0 <- 0
+	FARG_strcp_c+1 <- 0
+	CALL _strcp_c
+//lcd.h,63 :: 		strcp_c(lcd2, lcd2_default);
+	FARG_strcp_c+0 <- 0
+	FARG_strcp_c+1 <- 0
+	CALL _strcp_c
+  end
+
+_DisplayScreen1:
+  begin
+//lcd.h,70 :: 		Lcd8_Cmd(LCD_CLEAR);
+	FARG_Lcd8_Cmd+0 <- 1
+	CALL _Lcd8_Cmd
+//lcd.h,72 :: 		strcpy(temp, lcd1);
+	FARG_strcpy+0 <- 0
+	FARG_strcpy+1 <- 0
+	CALL _strcpy
+//lcd.h,74 :: 		Lcd8_Out(1, 1, temp);
+	FARG_Lcd8_Out+0 <- 1
+	FARG_Lcd8_Out+1 <- 1
+	FARG_Lcd8_Out+2 <- 0
+	CALL _Lcd8_Out
+//lcd.h,76 :: 		strcpy(temp, lcd2);
+	FARG_strcpy+0 <- 0
+	FARG_strcpy+1 <- 0
+	CALL _strcpy
+//lcd.h,78 :: 		Lcd8_Out(2, 1, temp);
+	FARG_Lcd8_Out+0 <- 2
+	FARG_Lcd8_Out+1 <- 1
+	FARG_Lcd8_Out+2 <- 0
+	CALL _Lcd8_Out
+//lcd.h,80 :: 		lcd_screen = 1;
+	_lcd_screen <- 1
+  end
+
+_DisplayScreen2:
+  begin
+//lcd.h,85 :: 		Lcd8_Cmd(LCD_CLEAR);
+	FARG_Lcd8_Cmd+0 <- 1
+	CALL _Lcd8_Cmd
+//lcd.h,87 :: 		Lcd8_Chr(1,3,'1');
+	FARG_Lcd8_Chr+0 <- 1
+	FARG_Lcd8_Chr+1 <- 3
+	FARG_Lcd8_Chr+2 <- 49
+	CALL _Lcd8_Chr
+//lcd.h,89 :: 		Lcd8_Chr(1,8,'2');
+	FARG_Lcd8_Chr+0 <- 1
+	FARG_Lcd8_Chr+1 <- 8
+	FARG_Lcd8_Chr+2 <- 50
+	CALL _Lcd8_Chr
+//lcd.h,91 :: 		Lcd8_Chr(1,13,'3');
+	FARG_Lcd8_Chr+0 <- 1
+	FARG_Lcd8_Chr+1 <- 13
+	FARG_Lcd8_Chr+2 <- 51
+	CALL _Lcd8_Chr
+//lcd.h,93 :: 		LCD8_Chr(2, 2, (AXIS1_ENABLE_BIT) ? 3 : 2);
+	FARG_Lcd8_Chr+0 <- 2
+	FARG_Lcd8_Chr+1 <- 2
+	if (!_PORTA_V) then goto L_DisplayScreen2_32
+	STACK_0 <- 3
+	goto	L_DisplayScreen2_33
+L_DisplayScreen2_32:
+	STACK_0 <- 2
+L_DisplayScreen2_33:
+	FARG_Lcd8_Chr+2 <- STACK_0
+	CALL _Lcd8_Chr
+//lcd.h,95 :: 		LCD8_Chr(2, 4, (AXIS1_DIRECTION_BIT) ? 1 : 0);
+	FARG_Lcd8_Chr+0 <- 2
+	FARG_Lcd8_Chr+1 <- 4
+	if (!_PORTA_V) then goto L_DisplayScreen2_34
+	STACK_0 <- 1
+	goto	L_DisplayScreen2_35
+L_DisplayScreen2_34:
+	STACK_0 <- 0
+L_DisplayScreen2_35:
+	FARG_Lcd8_Chr+2 <- STACK_0
+	CALL _Lcd8_Chr
+//lcd.h,97 :: 		LCD8_Chr(2, 7, (AXIS2_ENABLE_BIT) ? 3 : 2);
+	FARG_Lcd8_Chr+0 <- 2
+	FARG_Lcd8_Chr+1 <- 7
+	if (!_PORTE_V) then goto L_DisplayScreen2_36
+	STACK_0 <- 3
+	goto	L_DisplayScreen2_37
+L_DisplayScreen2_36:
+	STACK_0 <- 2
+L_DisplayScreen2_37:
+	FARG_Lcd8_Chr+2 <- STACK_0
+	CALL _Lcd8_Chr
+//lcd.h,99 :: 		LCD8_Chr(2, 9, (AXIS2_DIRECTION_BIT) ? 1 : 0);
+	FARG_Lcd8_Chr+0 <- 2
+	FARG_Lcd8_Chr+1 <- 9
+	if (!_PORTE_V) then goto L_DisplayScreen2_38
+	STACK_0 <- 1
+	goto	L_DisplayScreen2_39
+L_DisplayScreen2_38:
+	STACK_0 <- 0
+L_DisplayScreen2_39:
+	FARG_Lcd8_Chr+2 <- STACK_0
+	CALL _Lcd8_Chr
+//lcd.h,101 :: 		LCD8_Chr(2, 12, (AXIS3_ENABLE_BIT) ? 3 : 2);
+	FARG_Lcd8_Chr+0 <- 2
+	FARG_Lcd8_Chr+1 <- 12
+	if (!PORTC) then goto L_DisplayScreen2_40
+	STACK_0 <- 3
+	goto	L_DisplayScreen2_41
+L_DisplayScreen2_40:
+	STACK_0 <- 2
+L_DisplayScreen2_41:
+	FARG_Lcd8_Chr+2 <- STACK_0
+	CALL _Lcd8_Chr
+//lcd.h,103 :: 		LCD8_Chr(2, 14, (AXIS3_DIRECTION_BIT) ? 1 : 0);
+	FARG_Lcd8_Chr+0 <- 2
+	FARG_Lcd8_Chr+1 <- 14
+	if (!PORTC) then goto L_DisplayScreen2_42
+	STACK_0 <- 1
+	goto	L_DisplayScreen2_43
+L_DisplayScreen2_42:
+	STACK_0 <- 0
+L_DisplayScreen2_43:
+	FARG_Lcd8_Chr+2 <- STACK_0
+	CALL _Lcd8_Chr
+//lcd.h,105 :: 		lcd_screen = 2;
+	_lcd_screen <- 2
+  end
+
+_ProcessStop:
+  begin
+//go.h,7 :: 		T2CON.TMR2ON = 0; // Disable Timer2
+	T2CON <-  T2CON & -5
+  end
+
+_Trace:
+  begin
+//go.h,12 :: 		trace_counter++;
+	_trace_counter <-  _trace_counter + 1
+	_trace_counter <- _trace_counter
+//go.h,14 :: 		if (trace_counter >= trace_skip)
+	if ( _trace_counter < _trace_skip) then goto L_Trace_44
+//go.h,16 :: 		trace_flag = 1;
+	_trace_flag <- 1
+//go.h,18 :: 		trace_counter = 0;
+	_trace_counter <- 0
+//go.h,19 :: 		}
+L_Trace_44:
+  end
+
+_interrupt:
+  begin
+//go.h,24 :: 		short axis1_job_over = 0;
+	interrupt_axis1_job_over_L0 <- 0
+//go.h,26 :: 		short axis2_job_over = 0;
+	interrupt_axis2_job_over_L0 <- 0
+//go.h,28 :: 		short axis3_job_over = 0;
+	interrupt_axis3_job_over_L0 <- 0
+//go.h,30 :: 		if (SWITCH1) switch1_closed = 1;
+	if (!PORTD) then goto L_interrupt_45
+	_switch1_closed <- 1
+L_interrupt_45:
+//go.h,32 :: 		if (SWITCH2) switch2_closed = 1;
+	if (!PORTD) then goto L_interrupt_46
+	_switch2_closed <- 1
+L_interrupt_46:
+//go.h,34 :: 		axis1_counter++;
+	_axis1_counter <-  _axis1_counter + 1
+	_axis1_counter <- _axis1_counter
+//go.h,36 :: 		axis2_counter++;
+	_axis2_counter <-  _axis2_counter + 1
+	_axis2_counter <- _axis2_counter
+//go.h,38 :: 		axis3_counter++;
+	_axis3_counter <-  _axis3_counter + 1
+	_axis3_counter <- _axis3_counter
+//go.h,40 :: 		axis1_warmup_counter++;
+	_axis1_warmup_counter <-  _axis1_warmup_counter + 1
+	_axis1_warmup_counter <- _axis1_warmup_counter
+//go.h,42 :: 		axis2_warmup_counter++;
+	_axis2_warmup_counter <-  _axis2_warmup_counter + 1
+	_axis2_warmup_counter <- _axis2_warmup_counter
+//go.h,44 :: 		axis3_warmup_counter++;
+	_axis3_warmup_counter <-  _axis3_warmup_counter + 1
+	_axis3_warmup_counter <- _axis3_warmup_counter
+//go.h,48 :: 		if (!AXIS1_ENABLE_BIT) axis1_job_over = 1;
+	if (_PORTA_V) then goto L_interrupt_47
+	interrupt_axis1_job_over_L0 <- 1
+L_interrupt_47:
+//go.h,50 :: 		if (!axis1_bind_switch1 && !axis1_bind_switch2 && !axis1_steps) axis1_job_over = 1;
+	if (_axis1_bind_switch1) then goto L_interrupt_50
+	if (_axis1_bind_switch2) then goto L_interrupt_50
+	if (_axis1_steps) then goto L_interrupt_50
+L382_ex_L_interrupt_50:
+	interrupt_axis1_job_over_L0 <- 1
+L_interrupt_50:
+//go.h,52 :: 		if (!axis1_bind_switch1 && !axis1_bind_switch2 && axis1_steps_counter >= axis1_steps) axis1_job_over = 1;
+	if (_axis1_bind_switch1) then goto L_interrupt_53
+	if (_axis1_bind_switch2) then goto L_interrupt_53
+	if ( _axis1_steps_counter < _axis1_steps) then goto L_interrupt_53
+L397_ex_L_interrupt_53:
+	interrupt_axis1_job_over_L0 <- 1
+L_interrupt_53:
+//go.h,54 :: 		if (axis1_bind_switch1 && switch1_closed == 1) axis1_job_over = 1;
+	if (!_axis1_bind_switch1) then goto L_interrupt_56
+	if ( _switch1_closed != 1) then goto L_interrupt_56
+L409_ex_L_interrupt_56:
+	interrupt_axis1_job_over_L0 <- 1
+L_interrupt_56:
+//go.h,56 :: 		if (axis1_bind_switch2 && switch2_closed == 1) axis1_job_over = 1;
+	if (!_axis1_bind_switch2) then goto L_interrupt_59
+	if ( _switch2_closed != 1) then goto L_interrupt_59
+L421_ex_L_interrupt_59:
+	interrupt_axis1_job_over_L0 <- 1
+L_interrupt_59:
+//go.h,60 :: 		if (!AXIS2_ENABLE_BIT) axis2_job_over = 1;
+	if (_PORTE_V) then goto L_interrupt_60
+	interrupt_axis2_job_over_L0 <- 1
+L_interrupt_60:
+//go.h,62 :: 		if (!axis2_bind_switch1 && !axis2_bind_switch2 && !axis2_steps) axis2_job_over = 1;
+	if (_axis2_bind_switch1) then goto L_interrupt_63
+	if (_axis2_bind_switch2) then goto L_interrupt_63
+	if (_axis2_steps) then goto L_interrupt_63
+L440_ex_L_interrupt_63:
+	interrupt_axis2_job_over_L0 <- 1
+L_interrupt_63:
+//go.h,64 :: 		if (!axis2_bind_switch1 && !axis2_bind_switch2 && axis2_steps_counter >= axis2_steps) axis2_job_over = 1;
+	if (_axis2_bind_switch1) then goto L_interrupt_66
+	if (_axis2_bind_switch2) then goto L_interrupt_66
+	if ( _axis2_steps_counter < _axis2_steps) then goto L_interrupt_66
+L455_ex_L_interrupt_66:
+	interrupt_axis2_job_over_L0 <- 1
+L_interrupt_66:
+//go.h,66 :: 		if (axis2_bind_switch1 && switch1_closed == 1) axis2_job_over = 1;
+	if (!_axis2_bind_switch1) then goto L_interrupt_69
+	if ( _switch1_closed != 1) then goto L_interrupt_69
+L467_ex_L_interrupt_69:
+	interrupt_axis2_job_over_L0 <- 1
+L_interrupt_69:
+//go.h,68 :: 		if (axis2_bind_switch2 && switch2_closed == 1) axis2_job_over = 1;
+	if (!_axis2_bind_switch2) then goto L_interrupt_72
+	if ( _switch2_closed != 1) then goto L_interrupt_72
+L479_ex_L_interrupt_72:
+	interrupt_axis2_job_over_L0 <- 1
+L_interrupt_72:
+//go.h,72 :: 		if (!AXIS3_ENABLE_BIT) axis3_job_over = 1;
+	if (PORTC) then goto L_interrupt_73
+	interrupt_axis3_job_over_L0 <- 1
+L_interrupt_73:
+//go.h,74 :: 		if (!axis3_bind_switch1 && !axis3_bind_switch2 && !axis3_steps) axis3_job_over = 1;
+	if (_axis3_bind_switch1) then goto L_interrupt_76
+	if (_axis3_bind_switch2) then goto L_interrupt_76
+	if (_axis3_steps) then goto L_interrupt_76
+L498_ex_L_interrupt_76:
+	interrupt_axis3_job_over_L0 <- 1
+L_interrupt_76:
+//go.h,76 :: 		if (!axis3_bind_switch1 && !axis3_bind_switch2 && axis3_steps_counter >= axis3_steps) axis3_job_over = 1;
+	if (_axis3_bind_switch1) then goto L_interrupt_79
+	if (_axis3_bind_switch2) then goto L_interrupt_79
+	if ( _axis3_steps_counter < _axis3_steps) then goto L_interrupt_79
+L513_ex_L_interrupt_79:
+	interrupt_axis3_job_over_L0 <- 1
+L_interrupt_79:
+//go.h,78 :: 		if (axis3_bind_switch1 && switch1_closed == 1) axis3_job_over = 1;
+	if (!_axis3_bind_switch1) then goto L_interrupt_82
+	if ( _switch1_closed != 1) then goto L_interrupt_82
+L525_ex_L_interrupt_82:
+	interrupt_axis3_job_over_L0 <- 1
+L_interrupt_82:
+//go.h,80 :: 		if (axis3_bind_switch2 && switch2_closed == 1) axis3_job_over = 1;
+	if (!_axis3_bind_switch2) then goto L_interrupt_85
+	if ( _switch2_closed != 1) then goto L_interrupt_85
+L537_ex_L_interrupt_85:
+	interrupt_axis3_job_over_L0 <- 1
+L_interrupt_85:
+//go.h,84 :: 		if (axis1_warmup_counter >= axis1_period_warmup)
+	if ( _axis1_warmup_counter < _axis1_period_warmup) then goto L_interrupt_86
+//go.h,86 :: 		if (axis1_period_current<axis1_period_end) axis1_period_current++;
+	if ( _axis1_period_current >= _axis1_period_end) then goto L_interrupt_87
+	_axis1_period_current <-  _axis1_period_current + 1
+	_axis1_period_current <- _axis1_period_current
+L_interrupt_87:
+//go.h,88 :: 		if (axis1_period_current>axis1_period_end) axis1_period_current--;
+	if ( _axis1_period_current <= _axis1_period_end) then goto L_interrupt_88
+	_axis1_period_current <-  _axis1_period_current - 1
+	_axis1_period_current <- _axis1_period_current
+L_interrupt_88:
+//go.h,90 :: 		axis1_warmup_counter = 0;
+	_axis1_warmup_counter <- 0
+//go.h,91 :: 		}
+L_interrupt_86:
+//go.h,93 :: 		if (axis2_warmup_counter >= axis2_period_warmup)
+	if ( _axis2_warmup_counter < _axis2_period_warmup) then goto L_interrupt_89
+//go.h,95 :: 		if (axis2_period_current<axis2_period_end) axis2_period_current++;
+	if ( _axis2_period_current >= _axis2_period_end) then goto L_interrupt_90
+	_axis2_period_current <-  _axis2_period_current + 1
+	_axis2_period_current <- _axis2_period_current
+L_interrupt_90:
+//go.h,97 :: 		if (axis2_period_current>axis2_period_end) axis2_period_current--;
+	if ( _axis2_period_current <= _axis2_period_end) then goto L_interrupt_91
+	_axis2_period_current <-  _axis2_period_current - 1
+	_axis2_period_current <- _axis2_period_current
+L_interrupt_91:
+//go.h,99 :: 		axis2_warmup_counter = 0;
+	_axis2_warmup_counter <- 0
+//go.h,100 :: 		}
+L_interrupt_89:
+//go.h,102 :: 		if (axis3_warmup_counter >= axis3_period_warmup)
+	if ( _axis3_warmup_counter < _axis3_period_warmup) then goto L_interrupt_92
+//go.h,104 :: 		if (axis3_period_current<axis3_period_end) axis3_period_current++;
+	if ( _axis3_period_current >= _axis3_period_end) then goto L_interrupt_93
+	_axis3_period_current <-  _axis3_period_current + 1
+	_axis3_period_current <- _axis3_period_current
+L_interrupt_93:
+//go.h,106 :: 		if (axis3_period_current>axis3_period_end) axis3_period_current--;
+	if ( _axis3_period_current <= _axis3_period_end) then goto L_interrupt_94
+	_axis3_period_current <-  _axis3_period_current - 1
+	_axis3_period_current <- _axis3_period_current
+L_interrupt_94:
+//go.h,108 :: 		axis3_warmup_counter = 0;
+	_axis3_warmup_counter <- 0
+//go.h,109 :: 		}
+L_interrupt_92:
+//go.h,113 :: 		if (axis1_counter>=axis1_period_current)
+	if ( _axis1_counter < _axis1_period_current) then goto L_interrupt_95
+//go.h,115 :: 		axis1_counter = 0;
+	_axis1_counter <- 0
+//go.h,117 :: 		axis1_steps_counter++;
+	_axis1_steps_counter <-  _axis1_steps_counter + 1
+	_axis1_steps_counter <- _axis1_steps_counter
+//go.h,119 :: 		if (!axis1_job_over || (!axis1_steps && AXIS1_ENABLE_BIT))
+	if (!interrupt_axis1_job_over_L0) then goto L609_ex_L_interrupt_100
+	if (_axis1_steps) then goto L602_ex_L609_ex_L_interrupt_100
+	STACK_1 <-  _PORTA_V & 2
+	STACK_0 <- 1
+	STACK_1 <-  STACK_1 shr STACK_0
+	if (STACK_1) then goto L609_ex_L_interrupt_100
+L602_ex_L609_ex_L_interrupt_100:
+	goto	L_interrupt_100
+L609_ex_L_interrupt_100:
+//go.h,121 :: 		AXIS1_STEP_BIT = ~ AXIS1_STEP_BIT; WriteVirtualPorts();
+	STACK_1 <-  _PORTA_V & 4
+	STACK_0 <- 2
+	STACK_1 <-  STACK_1 shr STACK_0
+	STACK_0 <- ~STACK_1
+	_PORTA_V <- setbit(STACK_0)
+	CALL _WriteVirtualPorts
+//go.h,122 :: 		AXIS1_STEP_BIT = ~ AXIS1_STEP_BIT; WriteVirtualPorts();
+	STACK_1 <-  _PORTA_V & 4
+	STACK_0 <- 2
+	STACK_1 <-  STACK_1 shr STACK_0
+	STACK_0 <- ~STACK_1
+	_PORTA_V <- setbit(STACK_0)
+	CALL _WriteVirtualPorts
+//go.h,124 :: 		if (trace_axis == 1) Trace();
+	if ( _trace_axis != 1) then goto L_interrupt_101
+	CALL _Trace
+L_interrupt_101:
+//go.h,125 :: 		}
+L_interrupt_100:
+//go.h,126 :: 		}
+L_interrupt_95:
+//go.h,128 :: 		if (axis2_counter>=axis2_period_current)
+	if ( _axis2_counter < _axis2_period_current) then goto L_interrupt_102
+//go.h,130 :: 		axis2_counter = 0;
+	_axis2_counter <- 0
+//go.h,132 :: 		axis2_steps_counter++;
+	_axis2_steps_counter <-  _axis2_steps_counter + 1
+	_axis2_steps_counter <- _axis2_steps_counter
+//go.h,134 :: 		if (!axis2_job_over || (!axis2_steps && AXIS2_ENABLE_BIT))
+	if (!interrupt_axis2_job_over_L0) then goto L657_ex_L_interrupt_107
+	if (_axis2_steps) then goto L650_ex_L657_ex_L_interrupt_107
+	STACK_1 <-  _PORTE_V & 2
+	STACK_0 <- 1
+	STACK_1 <-  STACK_1 shr STACK_0
+	if (STACK_1) then goto L657_ex_L_interrupt_107
+L650_ex_L657_ex_L_interrupt_107:
+	goto	L_interrupt_107
+L657_ex_L_interrupt_107:
+//go.h,136 :: 		AXIS2_STEP_BIT = ~AXIS2_STEP_BIT; WriteVirtualPorts();
+	STACK_1 <-  _PORTE_V & 4
+	STACK_0 <- 2
+	STACK_1 <-  STACK_1 shr STACK_0
+	STACK_0 <- ~STACK_1
+	_PORTE_V <- setbit(STACK_0)
+	CALL _WriteVirtualPorts
+//go.h,137 :: 		AXIS2_STEP_BIT = ~AXIS2_STEP_BIT; WriteVirtualPorts();
+	STACK_1 <-  _PORTE_V & 4
+	STACK_0 <- 2
+	STACK_1 <-  STACK_1 shr STACK_0
+	STACK_0 <- ~STACK_1
+	_PORTE_V <- setbit(STACK_0)
+	CALL _WriteVirtualPorts
+//go.h,139 :: 		if (trace_axis == 2) Trace();
+	if ( _trace_axis != 2) then goto L_interrupt_108
+	CALL _Trace
+L_interrupt_108:
+//go.h,140 :: 		}
+L_interrupt_107:
+//go.h,141 :: 		}
+L_interrupt_102:
+//go.h,143 :: 		if (axis3_counter>=axis3_period_current)
+	if ( _axis3_counter < _axis3_period_current) then goto L_interrupt_109
+//go.h,145 :: 		axis3_counter = 0;
+	_axis3_counter <- 0
+//go.h,147 :: 		axis3_steps_counter++;
+	_axis3_steps_counter <-  _axis3_steps_counter + 1
+	_axis3_steps_counter <- _axis3_steps_counter
+//go.h,149 :: 		if (!axis3_job_over || (!axis3_steps && AXIS3_ENABLE_BIT))
+	if (!interrupt_axis3_job_over_L0) then goto L705_ex_L_interrupt_114
+	if (_axis3_steps) then goto L698_ex_L705_ex_L_interrupt_114
+	STACK_1 <-  PORTC & 2
+	STACK_0 <- 1
+	STACK_1 <-  STACK_1 shr STACK_0
+	if (STACK_1) then goto L705_ex_L_interrupt_114
+L698_ex_L705_ex_L_interrupt_114:
+	goto	L_interrupt_114
+L705_ex_L_interrupt_114:
+//go.h,151 :: 		AXIS3_STEP_BIT = ~AXIS3_STEP_BIT; WriteVirtualPorts();
+	STACK_1 <-  PORTC & 4
+	STACK_0 <- 2
+	STACK_1 <-  STACK_1 shr STACK_0
+	STACK_0 <- ~STACK_1
+	PORTC <- setbit(STACK_0)
+	CALL _WriteVirtualPorts
+//go.h,152 :: 		AXIS3_STEP_BIT = ~AXIS3_STEP_BIT; WriteVirtualPorts();
+	STACK_1 <-  PORTC & 4
+	STACK_0 <- 2
+	STACK_1 <-  STACK_1 shr STACK_0
+	STACK_0 <- ~STACK_1
+	PORTC <- setbit(STACK_0)
+	CALL _WriteVirtualPorts
+//go.h,154 :: 		if (trace_axis == 3) Trace();
+	if ( _trace_axis != 3) then goto L_interrupt_115
+	CALL _Trace
+L_interrupt_115:
+//go.h,155 :: 		}
+L_interrupt_114:
+//go.h,156 :: 		}
+L_interrupt_109:
+//go.h,160 :: 		if (axis1_job_over && axis2_job_over && axis3_job_over)
+	if (!interrupt_axis1_job_over_L0) then goto L_interrupt_118
+	if (!interrupt_axis2_job_over_L0) then goto L_interrupt_118
+	if (!interrupt_axis3_job_over_L0) then goto L_interrupt_118
+L735_ex_L_interrupt_118:
+//go.h,162 :: 		ProcessStop();
+	CALL _ProcessStop
+//go.h,164 :: 		task_done_msg = 1; // Signal main thread to output "Task Completed" message
+	_task_done_msg <- 1
+//go.h,166 :: 		task_running = 0;
+	_task_running <- 0
+//go.h,167 :: 		}
+L_interrupt_118:
+//go.h,169 :: 		PIR1.TMR2IF = 0; // Clear Timer2 Interrupt Flag
+	PIR1 <-  PIR1 & -3
+  end
+
+_ProcessGo:
+  begin
+//go.h,174 :: 		axis1_counter = 0;
+	_axis1_counter <- 0
+//go.h,176 :: 		axis2_counter = 0;
+	_axis2_counter <- 0
+//go.h,178 :: 		axis3_counter = 0;
+	_axis3_counter <- 0
+//go.h,180 :: 		axis1_steps_counter = 0;
+	_axis1_steps_counter <- 0
+//go.h,182 :: 		axis2_steps_counter = 0;
+	_axis2_steps_counter <- 0
+//go.h,184 :: 		axis3_steps_counter = 0;
+	_axis3_steps_counter <- 0
+//go.h,186 :: 		axis1_warmup_counter = 0;
+	_axis1_warmup_counter <- 0
+//go.h,188 :: 		axis2_warmup_counter = 0;
+	_axis2_warmup_counter <- 0
+//go.h,190 :: 		axis3_warmup_counter = 0;
+	_axis3_warmup_counter <- 0
+//go.h,192 :: 		switch1_closed = 0;
+	_switch1_closed <- 0
+//go.h,194 :: 		switch2_closed = 0;
+	_switch2_closed <- 0
+//go.h,196 :: 		axis1_period_current = axis1_period_start;
+	_axis1_period_current <- _axis1_period_start
+//go.h,198 :: 		axis2_period_current = axis2_period_start;
+	_axis2_period_current <- _axis2_period_start
+//go.h,200 :: 		axis3_period_current = axis3_period_start;
+	_axis3_period_current <- _axis3_period_start
+//go.h,202 :: 		INTCON.PEIE =1; // Enable Peripheral Interrupts
+	INTCON <-  INTCON | 64
+//go.h,204 :: 		INTCON.GIE = 1; // Enable General Interrupts
+	INTCON <-  INTCON | 128
+//go.h,206 :: 		PIE1.TMR2IE = 1; // Enable Timer2 Interrupt
+	PIE1 <-  PIE1 | 2
+//go.h,208 :: 		T2CON = 0b01001001; // Timer2 Configuration Word
+	T2CON <- 73
+//go.h,212 :: 		PR2 = PR2_setting;
+	PR2 <- _PR2_setting
+//go.h,214 :: 		trace_flag = 0;
+	_trace_flag <- 0
+//go.h,216 :: 		trace_counter = 0;
+	_trace_counter <- 0
+//go.h,218 :: 		task_running = 1;
+	_task_running <- 1
+//go.h,220 :: 		T2CON.TMR2ON = 1; // Enable Timer2
+	T2CON <-  T2CON | 4
+  end
+
+_ProcessACC:
+  begin
+//commands.h,15 :: 		if (IsCommand(cmd3)) // Check if input is "axis1 on"
+	FARG_strcmp_c+0 <- 0
+	FARG_strcmp_c+1 <- 0
+	CALL _strcmp_c
+	if (!STACK_0) then goto L_ProcessACC_119
+//commands.h,18 :: 		AXIS1_ENABLE_BIT = 1;
+	_PORTA_V <-  _PORTA_V | 2
+//commands.h,20 :: 		WriteVirtualPorts();
+	CALL _WriteVirtualPorts
+//commands.h,22 :: 		if (lcd_screen == 2) DisplayScreen2(); // Update if screen 2 is displayed
+	if ( _lcd_screen != 2) then goto L_ProcessACC_120
+	CALL _DisplayScreen2
+L_ProcessACC_120:
+//commands.h,24 :: 		SendConstLine(msg1); // Send "OK"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,26 :: 		return 1;
+	STACK_0 <- 1
+	return
+//commands.h,27 :: 		}
+L_ProcessACC_119:
+//commands.h,29 :: 		if (IsCommand(cmd4)) // Check if input is "axis1 off"
+	FARG_strcmp_c+0 <- 0
+	FARG_strcmp_c+1 <- 0
+	CALL _strcmp_c
+	if (!STACK_0) then goto L_ProcessACC_121
+//commands.h,31 :: 		AXIS1_ENABLE_BIT = 0;
+	_PORTA_V <-  _PORTA_V & -3
+//commands.h,33 :: 		WriteVirtualPorts();
+	CALL _WriteVirtualPorts
+//commands.h,35 :: 		if (lcd_screen == 2) DisplayScreen2(); // Update if screen 2 is displayed
+	if ( _lcd_screen != 2) then goto L_ProcessACC_122
+	CALL _DisplayScreen2
+L_ProcessACC_122:
+//commands.h,37 :: 		SendConstLine(msg1); // Send "OK"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,39 :: 		return 1;
+	STACK_0 <- 1
+	return
+//commands.h,40 :: 		}
+L_ProcessACC_121:
+//commands.h,42 :: 		if (IsCommand(cmd1)) // Check if input is "axis1 +"
+	FARG_strcmp_c+0 <- 0
+	FARG_strcmp_c+1 <- 0
+	CALL _strcmp_c
+	if (!STACK_0) then goto L_ProcessACC_123
+//commands.h,44 :: 		AXIS1_DIRECTION_BIT = 0;
+	_PORTA_V <-  _PORTA_V & -2
+//commands.h,46 :: 		WriteVirtualPorts();
+	CALL _WriteVirtualPorts
+//commands.h,48 :: 		if (lcd_screen == 2) DisplayScreen2(); // Update if screen 2 is displayed
+	if ( _lcd_screen != 2) then goto L_ProcessACC_124
+	CALL _DisplayScreen2
+L_ProcessACC_124:
+//commands.h,50 :: 		SendConstLine(msg1); // Send "OK"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,52 :: 		return 1;
+	STACK_0 <- 1
+	return
+//commands.h,53 :: 		}
+L_ProcessACC_123:
+//commands.h,55 :: 		if (IsCommand(cmd2)) // Check if input is "axis1 -"
+	FARG_strcmp_c+0 <- 0
+	FARG_strcmp_c+1 <- 0
+	CALL _strcmp_c
+	if (!STACK_0) then goto L_ProcessACC_125
+//commands.h,57 :: 		AXIS1_DIRECTION_BIT = 1;
+	_PORTA_V <-  _PORTA_V | 1
+//commands.h,59 :: 		WriteVirtualPorts();
+	CALL _WriteVirtualPorts
+//commands.h,61 :: 		if (lcd_screen == 2) DisplayScreen2(); // Update if screen 2 is displayed
+	if ( _lcd_screen != 2) then goto L_ProcessACC_126
+	CALL _DisplayScreen2
+L_ProcessACC_126:
+//commands.h,63 :: 		SendConstLine(msg1); // Send "OK"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,65 :: 		return 1;
+	STACK_0 <- 1
+	return
+//commands.h,66 :: 		}
+L_ProcessACC_125:
+//commands.h,68 :: 		if (IsCommand(cmd27)) // Check if input is "axis1 steps switch1"
+	FARG_strcmp_c+0 <- 0
+	FARG_strcmp_c+1 <- 0
+	CALL _strcmp_c
+	if (!STACK_0) then goto L_ProcessACC_127
+//commands.h,70 :: 		axis1_steps = 1;
+	_axis1_steps <- 1
+//commands.h,72 :: 		axis1_bind_switch1 = 1;
+	_axis1_bind_switch1 <- 1
+//commands.h,74 :: 		axis1_bind_switch2 = 0;
+	_axis1_bind_switch2 <- 0
+//commands.h,76 :: 		SendConstLine(msg1); // Send "OK"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,78 :: 		return 1;
+	STACK_0 <- 1
+	return
+//commands.h,79 :: 		}
+L_ProcessACC_127:
+//commands.h,81 :: 		if (IsCommand(cmd28)) // Check if input is "axis1 steps switch2"
+	FARG_strcmp_c+0 <- 0
+	FARG_strcmp_c+1 <- 0
+	CALL _strcmp_c
+	if (!STACK_0) then goto L_ProcessACC_128
+//commands.h,83 :: 		axis1_steps = 1;
+	_axis1_steps <- 1
+//commands.h,85 :: 		axis1_bind_switch1 = 0;
+	_axis1_bind_switch1 <- 0
+//commands.h,87 :: 		axis1_bind_switch2 = 1;
+	_axis1_bind_switch2 <- 1
+//commands.h,89 :: 		SendConstLine(msg1); // Send "OK"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,91 :: 		return 1;
+	STACK_0 <- 1
+	return
+//commands.h,92 :: 		}
+L_ProcessACC_128:
+//commands.h,94 :: 		if (CommandStarts(cmd5)) // Check if input is "axis1 steps x", where x is a number
+	FARG_str_starts_with+0 <- 0
+	FARG_str_starts_with+1 <- 0
+	CALL _str_starts_with
+	if (!STACK_0) then goto L_ProcessACC_129
+//commands.h,96 :: 		axis1_steps = Extract_Numeric_Argument(12);
+	FARG_Extract_Numeric_Argument+0 <- 12
+	CALL _Extract_Numeric_Argument
+	_axis1_steps <- STACK_0
+//commands.h,98 :: 		axis1_bind_switch1 = 0;
+	_axis1_bind_switch1 <- 0
+//commands.h,100 :: 		axis1_bind_switch2 = 0;
+	_axis1_bind_switch2 <- 0
+//commands.h,102 :: 		SendConstLine(msg1); // Send "OK"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,104 :: 		return 1;
+	STACK_0 <- 1
+	return
+//commands.h,106 :: 		}
+L_ProcessACC_129:
+//commands.h,108 :: 		if (CommandStarts(cmd35)) // Check if input is "axis1 period start x", where x is a number
+	FARG_str_starts_with+0 <- 0
+	FARG_str_starts_with+1 <- 0
+	CALL _str_starts_with
+	if (!STACK_0) then goto L_ProcessACC_130
+//commands.h,111 :: 		axis1_period_current = axis1_period_start = Extract_Numeric_Argument(19);
+	FARG_Extract_Numeric_Argument+0 <- 19
+	CALL _Extract_Numeric_Argument
+	_axis1_period_start <- STACK_0
+	_axis1_period_current <- STACK_0
+//commands.h,113 :: 		SendConstLine(msg1); // Send "OK"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,115 :: 		return 1;
+	STACK_0 <- 1
+	return
+//commands.h,117 :: 		}
+L_ProcessACC_130:
+//commands.h,119 :: 		if (CommandStarts(cmd36)) // Check if input is "axis1 period end x", where x is a number
+	FARG_str_starts_with+0 <- 0
+	FARG_str_starts_with+1 <- 0
+	CALL _str_starts_with
+	if (!STACK_0) then goto L_ProcessACC_131
+//commands.h,122 :: 		axis1_period_end = Extract_Numeric_Argument(17);
+	FARG_Extract_Numeric_Argument+0 <- 17
+	CALL _Extract_Numeric_Argument
+	_axis1_period_end <- STACK_0
+//commands.h,124 :: 		SendConstLine(msg1); // Send "OK"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,126 :: 		return 1;
+	STACK_0 <- 1
+	return
+//commands.h,128 :: 		}
+L_ProcessACC_131:
+//commands.h,130 :: 		if (CommandStarts(cmd37)) // Check if input is "axis1 period warmup x", where x is a number
+	FARG_str_starts_with+0 <- 0
+	FARG_str_starts_with+1 <- 0
+	CALL _str_starts_with
+	if (!STACK_0) then goto L_ProcessACC_132
+//commands.h,133 :: 		axis1_period_warmup = Extract_Numeric_Argument(20);
+	FARG_Extract_Numeric_Argument+0 <- 20
+	CALL _Extract_Numeric_Argument
+	_axis1_period_warmup <- STACK_0
+//commands.h,135 :: 		SendConstLine(msg1); // Send "OK"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,137 :: 		return 1;
+	STACK_0 <- 1
+	return
+//commands.h,139 :: 		}
+L_ProcessACC_132:
+//commands.h,141 :: 		if (CommandStarts(cmd6)) // Check if input is "axis1 period x", where x is a number
+	FARG_str_starts_with+0 <- 0
+	FARG_str_starts_with+1 <- 0
+	CALL _str_starts_with
+	if (!STACK_0) then goto L_ProcessACC_133
+//commands.h,144 :: 		axis1_period_end = axis1_period_start = Extract_Numeric_Argument(13);
+	FARG_Extract_Numeric_Argument+0 <- 13
+	CALL _Extract_Numeric_Argument
+	_axis1_period_start <- STACK_0
+	_axis1_period_end <- STACK_0
+//commands.h,146 :: 		SendConstLine(msg1); // Send "OK"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,148 :: 		return 1;
+	STACK_0 <- 1
+	return
+//commands.h,150 :: 		}
+L_ProcessACC_133:
+//commands.h,154 :: 		if (IsCommand(cmd9)) // Check if input is "axis2 on"
+	FARG_strcmp_c+0 <- 0
+	FARG_strcmp_c+1 <- 0
+	CALL _strcmp_c
+	if (!STACK_0) then goto L_ProcessACC_134
+//commands.h,157 :: 		AXIS2_ENABLE_BIT = 1;
+	_PORTE_V <-  _PORTE_V | 2
+//commands.h,159 :: 		WriteVirtualPorts();
+	CALL _WriteVirtualPorts
+//commands.h,161 :: 		if (lcd_screen == 2) DisplayScreen2(); // Update if screen 2 is displayed
+	if ( _lcd_screen != 2) then goto L_ProcessACC_135
+	CALL _DisplayScreen2
+L_ProcessACC_135:
+//commands.h,163 :: 		SendConstLine(msg1); // Send "OK"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,165 :: 		return 1;
+	STACK_0 <- 1
+	return
+//commands.h,166 :: 		}
+L_ProcessACC_134:
+//commands.h,168 :: 		if (IsCommand(cmd10)) // Check if input is "axis2 off"
+	FARG_strcmp_c+0 <- 0
+	FARG_strcmp_c+1 <- 0
+	CALL _strcmp_c
+	if (!STACK_0) then goto L_ProcessACC_136
+//commands.h,170 :: 		AXIS2_ENABLE_BIT =0;
+	_PORTE_V <-  _PORTE_V & -3
+//commands.h,172 :: 		WriteVirtualPorts();
+	CALL _WriteVirtualPorts
+//commands.h,174 :: 		if (lcd_screen == 2) DisplayScreen2(); // Update if screen 2 is displayed
+	if ( _lcd_screen != 2) then goto L_ProcessACC_137
+	CALL _DisplayScreen2
+L_ProcessACC_137:
+//commands.h,176 :: 		SendConstLine(msg1); // Send "OK"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,178 :: 		return 1;
+	STACK_0 <- 1
+	return
+//commands.h,179 :: 		}
+L_ProcessACC_136:
+//commands.h,181 :: 		if (IsCommand(cmd7)) // Check if input is "axis2 +"
+	FARG_strcmp_c+0 <- 0
+	FARG_strcmp_c+1 <- 0
+	CALL _strcmp_c
+	if (!STACK_0) then goto L_ProcessACC_138
+//commands.h,183 :: 		AXIS2_DIRECTION_BIT = 0;
+	_PORTE_V <-  _PORTE_V & -2
+//commands.h,185 :: 		WriteVirtualPorts();
+	CALL _WriteVirtualPorts
+//commands.h,187 :: 		if (lcd_screen == 2) DisplayScreen2(); // Update if screen 2 is displayed
+	if ( _lcd_screen != 2) then goto L_ProcessACC_139
+	CALL _DisplayScreen2
+L_ProcessACC_139:
+//commands.h,189 :: 		SendConstLine(msg1); // Send "OK"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,191 :: 		return 1;
+	STACK_0 <- 1
+	return
+//commands.h,192 :: 		}
+L_ProcessACC_138:
+//commands.h,194 :: 		if (IsCommand(cmd8)) // Check if input is "axis2 -"
+	FARG_strcmp_c+0 <- 0
+	FARG_strcmp_c+1 <- 0
+	CALL _strcmp_c
+	if (!STACK_0) then goto L_ProcessACC_140
+//commands.h,196 :: 		AXIS2_DIRECTION_BIT = 1;
+	_PORTE_V <-  _PORTE_V | 1
+//commands.h,198 :: 		WriteVirtualPorts();
+	CALL _WriteVirtualPorts
+//commands.h,200 :: 		if (lcd_screen == 2) DisplayScreen2(); // Update if screen 2 is displayed
+	if ( _lcd_screen != 2) then goto L_ProcessACC_141
+	CALL _DisplayScreen2
+L_ProcessACC_141:
+//commands.h,202 :: 		SendConstLine(msg1); // Send "OK"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,204 :: 		return 1;
+	STACK_0 <- 1
+	return
+//commands.h,205 :: 		}
+L_ProcessACC_140:
+//commands.h,207 :: 		if (IsCommand(cmd29)) // Check if input is "axis2 steps switch1"
+	FARG_strcmp_c+0 <- 0
+	FARG_strcmp_c+1 <- 0
+	CALL _strcmp_c
+	if (!STACK_0) then goto L_ProcessACC_142
+//commands.h,209 :: 		axis2_steps = 1;
+	_axis2_steps <- 1
+//commands.h,211 :: 		axis2_bind_switch1 = 1;
+	_axis2_bind_switch1 <- 1
+//commands.h,213 :: 		axis2_bind_switch2 = 0;
+	_axis2_bind_switch2 <- 0
+//commands.h,215 :: 		SendConstLine(msg1); // Send "OK"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,217 :: 		return 1;
+	STACK_0 <- 1
+	return
+//commands.h,218 :: 		}
+L_ProcessACC_142:
+//commands.h,220 :: 		if (IsCommand(cmd30)) // Check if input is "axis2 steps switch2"
+	FARG_strcmp_c+0 <- 0
+	FARG_strcmp_c+1 <- 0
+	CALL _strcmp_c
+	if (!STACK_0) then goto L_ProcessACC_143
+//commands.h,222 :: 		axis2_steps = 1;
+	_axis2_steps <- 1
+//commands.h,224 :: 		axis2_bind_switch1 = 0;
+	_axis2_bind_switch1 <- 0
+//commands.h,226 :: 		axis2_bind_switch2 = 1;
+	_axis2_bind_switch2 <- 1
+//commands.h,228 :: 		SendConstLine(msg1); // Send "OK"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,230 :: 		return 1;
+	STACK_0 <- 1
+	return
+//commands.h,231 :: 		}
+L_ProcessACC_143:
+//commands.h,233 :: 		if (CommandStarts(cmd11)) // Check if input is "axis2 steps x", where x is a number
+	FARG_str_starts_with+0 <- 0
+	FARG_str_starts_with+1 <- 0
+	CALL _str_starts_with
+	if (!STACK_0) then goto L_ProcessACC_144
+//commands.h,235 :: 		axis2_steps = Extract_Numeric_Argument(12);
+	FARG_Extract_Numeric_Argument+0 <- 12
+	CALL _Extract_Numeric_Argument
+	_axis2_steps <- STACK_0
+//commands.h,237 :: 		axis2_bind_switch1 = 0;
+	_axis2_bind_switch1 <- 0
+//commands.h,239 :: 		axis2_bind_switch2 = 0;
+	_axis2_bind_switch2 <- 0
+//commands.h,241 :: 		SendConstLine(msg1); // Send "OK"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,243 :: 		return 1;
+	STACK_0 <- 1
+	return
+//commands.h,245 :: 		}
+L_ProcessACC_144:
+//commands.h,247 :: 		if (CommandStarts(cmd38)) // Check if input is "axis2 period start x", where x is a number
+	FARG_str_starts_with+0 <- 0
+	FARG_str_starts_with+1 <- 0
+	CALL _str_starts_with
+	if (!STACK_0) then goto L_ProcessACC_145
+//commands.h,250 :: 		axis2_period_start = Extract_Numeric_Argument(19);
+	FARG_Extract_Numeric_Argument+0 <- 19
+	CALL _Extract_Numeric_Argument
+	_axis2_period_start <- STACK_0
+//commands.h,252 :: 		SendConstLine(msg1); // Send "OK"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,254 :: 		return 1;
+	STACK_0 <- 1
+	return
+//commands.h,256 :: 		}
+L_ProcessACC_145:
+//commands.h,258 :: 		if (CommandStarts(cmd39)) // Check if input is "axis2 period end x", where x is a number
+	FARG_str_starts_with+0 <- 0
+	FARG_str_starts_with+1 <- 0
+	CALL _str_starts_with
+	if (!STACK_0) then goto L_ProcessACC_146
+//commands.h,260 :: 		axis2_period_end = Extract_Numeric_Argument(17);
+	FARG_Extract_Numeric_Argument+0 <- 17
+	CALL _Extract_Numeric_Argument
+	_axis2_period_end <- STACK_0
+//commands.h,262 :: 		SendConstLine(msg1); // Send "OK"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,264 :: 		return 1;
+	STACK_0 <- 1
+	return
+//commands.h,265 :: 		}
+L_ProcessACC_146:
+//commands.h,267 :: 		if (CommandStarts(cmd40)) // Check if input is "axis2 period warmup x", where x is a number
+	FARG_str_starts_with+0 <- 0
+	FARG_str_starts_with+1 <- 0
+	CALL _str_starts_with
+	if (!STACK_0) then goto L_ProcessACC_147
+//commands.h,269 :: 		axis2_period_warmup = Extract_Numeric_Argument(20);
+	FARG_Extract_Numeric_Argument+0 <- 20
+	CALL _Extract_Numeric_Argument
+	_axis2_period_warmup <- STACK_0
+//commands.h,271 :: 		SendConstLine(msg1); // Send "OK"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,273 :: 		return 1;
+	STACK_0 <- 1
+	return
+//commands.h,274 :: 		}
+L_ProcessACC_147:
+//commands.h,276 :: 		if (CommandStarts(cmd12)) // Check if input is "axis2 period x", where x is a number
+	FARG_str_starts_with+0 <- 0
+	FARG_str_starts_with+1 <- 0
+	CALL _str_starts_with
+	if (!STACK_0) then goto L_ProcessACC_148
+//commands.h,278 :: 		axis2_period_current = axis2_period_end = axis2_period_start = Extract_Numeric_Argument(13);
+	FARG_Extract_Numeric_Argument+0 <- 13
+	CALL _Extract_Numeric_Argument
+	_axis2_period_start <- STACK_0
+	_axis2_period_end <- STACK_0
+	_axis2_period_current <- STACK_0
+//commands.h,280 :: 		SendConstLine(msg1); // Send "OK"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,282 :: 		return 1;
+	STACK_0 <- 1
+	return
+//commands.h,284 :: 		}
+L_ProcessACC_148:
+//commands.h,288 :: 		if (IsCommand(cmd15)) // Check if input is "axis3 on"
+	FARG_strcmp_c+0 <- 0
+	FARG_strcmp_c+1 <- 0
+	CALL _strcmp_c
+	if (!STACK_0) then goto L_ProcessACC_149
+//commands.h,291 :: 		AXIS3_ENABLE_BIT = 1;
+	PORTC <-  PORTC | 2
+//commands.h,293 :: 		WriteVirtualPorts();
+	CALL _WriteVirtualPorts
+//commands.h,295 :: 		if (lcd_screen == 2) DisplayScreen2(); // Update if screen 2 is displayed
+	if ( _lcd_screen != 2) then goto L_ProcessACC_150
+	CALL _DisplayScreen2
+L_ProcessACC_150:
+//commands.h,297 :: 		SendConstLine(msg1); // Send "OK"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,299 :: 		return 1;
+	STACK_0 <- 1
+	return
+//commands.h,300 :: 		}
+L_ProcessACC_149:
+//commands.h,302 :: 		if (IsCommand(cmd16)) // Check if input is "axis3 off"
+	FARG_strcmp_c+0 <- 0
+	FARG_strcmp_c+1 <- 0
+	CALL _strcmp_c
+	if (!STACK_0) then goto L_ProcessACC_151
+//commands.h,304 :: 		AXIS3_ENABLE_BIT = 0;
+	PORTC <-  PORTC & -3
+//commands.h,306 :: 		WriteVirtualPorts();
+	CALL _WriteVirtualPorts
+//commands.h,308 :: 		if (lcd_screen == 2) DisplayScreen2(); // Update if screen 2 is displayed
+	if ( _lcd_screen != 2) then goto L_ProcessACC_152
+	CALL _DisplayScreen2
+L_ProcessACC_152:
+//commands.h,310 :: 		SendConstLine(msg1); // Send "OK"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,312 :: 		return 1;
+	STACK_0 <- 1
+	return
+//commands.h,313 :: 		}
+L_ProcessACC_151:
+//commands.h,315 :: 		if (IsCommand(cmd13)) // Check if input is "axis3 +"
+	FARG_strcmp_c+0 <- 0
+	FARG_strcmp_c+1 <- 0
+	CALL _strcmp_c
+	if (!STACK_0) then goto L_ProcessACC_153
+//commands.h,317 :: 		AXIS3_DIRECTION_BIT = 0;
+	PORTC <-  PORTC & -2
+//commands.h,319 :: 		WriteVirtualPorts();
+	CALL _WriteVirtualPorts
+//commands.h,321 :: 		if (lcd_screen == 2) DisplayScreen2(); // Update if screen 2 is displayed
+	if ( _lcd_screen != 2) then goto L_ProcessACC_154
+	CALL _DisplayScreen2
+L_ProcessACC_154:
+//commands.h,323 :: 		SendConstLine(msg1); // Send "OK"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,325 :: 		return 1;
+	STACK_0 <- 1
+	return
+//commands.h,326 :: 		}
+L_ProcessACC_153:
+//commands.h,328 :: 		if (IsCommand(cmd14)) // Check if input is "axis3 -"
+	FARG_strcmp_c+0 <- 0
+	FARG_strcmp_c+1 <- 0
+	CALL _strcmp_c
+	if (!STACK_0) then goto L_ProcessACC_155
+//commands.h,330 :: 		AXIS3_DIRECTION_BIT = 1;
+	PORTC <-  PORTC | 1
+//commands.h,332 :: 		WriteVirtualPorts();
+	CALL _WriteVirtualPorts
+//commands.h,334 :: 		if (lcd_screen == 2) DisplayScreen2(); // Update if screen 2 is displayed
+	if ( _lcd_screen != 2) then goto L_ProcessACC_156
+	CALL _DisplayScreen2
+L_ProcessACC_156:
+//commands.h,336 :: 		SendConstLine(msg1); // Send "OK"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,338 :: 		return 1;
+	STACK_0 <- 1
+	return
+//commands.h,339 :: 		}
+L_ProcessACC_155:
+//commands.h,341 :: 		if (IsCommand(cmd31)) // Check if input is "axis3 steps switch1"
+	FARG_strcmp_c+0 <- 0
+	FARG_strcmp_c+1 <- 0
+	CALL _strcmp_c
+	if (!STACK_0) then goto L_ProcessACC_157
+//commands.h,343 :: 		axis3_steps = 1;
+	_axis3_steps <- 1
+//commands.h,345 :: 		axis3_bind_switch1 = 1;
+	_axis3_bind_switch1 <- 1
+//commands.h,347 :: 		axis3_bind_switch2 = 0;
+	_axis3_bind_switch2 <- 0
+//commands.h,349 :: 		SendConstLine(msg1); // Send "OK"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,351 :: 		return 1;
+	STACK_0 <- 1
+	return
+//commands.h,352 :: 		}
+L_ProcessACC_157:
+//commands.h,354 :: 		if (IsCommand(cmd32)) // Check if input is "axis3 steps switch2"
+	FARG_strcmp_c+0 <- 0
+	FARG_strcmp_c+1 <- 0
+	CALL _strcmp_c
+	if (!STACK_0) then goto L_ProcessACC_158
+//commands.h,356 :: 		axis3_steps = 1;
+	_axis3_steps <- 1
+//commands.h,358 :: 		axis3_bind_switch1 = 0;
+	_axis3_bind_switch1 <- 0
+//commands.h,360 :: 		axis3_bind_switch2 = 1;
+	_axis3_bind_switch2 <- 1
+//commands.h,362 :: 		SendConstLine(msg1); // Send "OK"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,364 :: 		return 1;
+	STACK_0 <- 1
+	return
+//commands.h,365 :: 		}
+L_ProcessACC_158:
+//commands.h,367 :: 		if (CommandStarts(cmd17)) // Check if input is "axis3 steps x", where x is a number
+	FARG_str_starts_with+0 <- 0
+	FARG_str_starts_with+1 <- 0
+	CALL _str_starts_with
+	if (!STACK_0) then goto L_ProcessACC_159
+//commands.h,369 :: 		axis3_steps = Extract_Numeric_Argument(12);
+	FARG_Extract_Numeric_Argument+0 <- 12
+	CALL _Extract_Numeric_Argument
+	_axis3_steps <- STACK_0
+//commands.h,371 :: 		axis3_bind_switch1 = 0;
+	_axis3_bind_switch1 <- 0
+//commands.h,373 :: 		axis3_bind_switch2 = 0;
+	_axis3_bind_switch2 <- 0
+//commands.h,375 :: 		SendConstLine(msg1); // Send "OK"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,377 :: 		return 1;
+	STACK_0 <- 1
+	return
+//commands.h,378 :: 		}
+L_ProcessACC_159:
+//commands.h,380 :: 		if (CommandStarts(cmd41)) // Check if input is "axis3 period start x", where x is a number
+	FARG_str_starts_with+0 <- 0
+	FARG_str_starts_with+1 <- 0
+	CALL _str_starts_with
+	if (!STACK_0) then goto L_ProcessACC_160
+//commands.h,382 :: 		axis3_period_current = axis3_period_start = axis3_period_end = Extract_Numeric_Argument(19);
+	FARG_Extract_Numeric_Argument+0 <- 19
+	CALL _Extract_Numeric_Argument
+	_axis3_period_end <- STACK_0
+	_axis3_period_start <- STACK_0
+	_axis3_period_current <- STACK_0
+//commands.h,384 :: 		SendConstLine(msg1); // Send "OK"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,386 :: 		return 1;
+	STACK_0 <- 1
+	return
+//commands.h,387 :: 		}
+L_ProcessACC_160:
+//commands.h,389 :: 		if (CommandStarts(cmd42)) // Check if input is "axis3 period end x", where x is a number
+	FARG_str_starts_with+0 <- 0
+	FARG_str_starts_with+1 <- 0
+	CALL _str_starts_with
+	if (!STACK_0) then goto L_ProcessACC_161
+//commands.h,392 :: 		axis3_period_end= Extract_Numeric_Argument(17);
+	FARG_Extract_Numeric_Argument+0 <- 17
+	CALL _Extract_Numeric_Argument
+	_axis3_period_end <- STACK_0
+//commands.h,394 :: 		SendConstLine(msg1); // Send "OK"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,396 :: 		return 1;
+	STACK_0 <- 1
+	return
+//commands.h,398 :: 		}
+L_ProcessACC_161:
+//commands.h,400 :: 		if (CommandStarts(cmd43)) // Check if input is "axis3 period warmup x", where x is a number
+	FARG_str_starts_with+0 <- 0
+	FARG_str_starts_with+1 <- 0
+	CALL _str_starts_with
+	if (!STACK_0) then goto L_ProcessACC_162
+//commands.h,403 :: 		axis3_period_warmup = Extract_Numeric_Argument(20);
+	FARG_Extract_Numeric_Argument+0 <- 20
+	CALL _Extract_Numeric_Argument
+	_axis3_period_warmup <- STACK_0
+//commands.h,405 :: 		SendConstLine(msg1); // Send "OK"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,407 :: 		return 1;
+	STACK_0 <- 1
+	return
+//commands.h,409 :: 		}
+L_ProcessACC_162:
+//commands.h,411 :: 		if (CommandStarts(cmd18)) // Check if input is "axis3 period x", where x is a number
+	FARG_str_starts_with+0 <- 0
+	FARG_str_starts_with+1 <- 0
+	CALL _str_starts_with
+	if (!STACK_0) then goto L_ProcessACC_163
+//commands.h,413 :: 		axis3_period_end = axis3_period_start = Extract_Numeric_Argument(13);
+	FARG_Extract_Numeric_Argument+0 <- 13
+	CALL _Extract_Numeric_Argument
+	_axis3_period_start <- STACK_0
+	_axis3_period_end <- STACK_0
+//commands.h,415 :: 		SendConstLine(msg1); // Send "OK"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,417 :: 		return 1;
+	STACK_0 <- 1
+	return
+//commands.h,418 :: 		}
+L_ProcessACC_163:
+//commands.h,420 :: 		return 0;
+	STACK_0 <- 0
+	return
+  end
+
+_ProcessCommand:
+  begin
+//commands.h,427 :: 		if (ProcessACC()) return;
+	CALL _ProcessACC
+	if (!STACK_0) then goto L_ProcessCommand_164
+	return
+L_ProcessCommand_164:
+//commands.h,431 :: 		if (IsCommand(cmd20))
+	FARG_strcmp_c+0 <- 0
+	FARG_strcmp_c+1 <- 0
+	CALL _strcmp_c
+	if (!STACK_0) then goto L_ProcessCommand_165
+//commands.h,433 :: 		SendConstLine(FIRMWARE_VERSION);
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,435 :: 		return;
+	return
+//commands.h,436 :: 		}
+L_ProcessCommand_165:
+//commands.h,438 :: 		if (IsCommand(cmd19)) // Check if input is "go"
+	FARG_strcmp_c+0 <- 0
+	FARG_strcmp_c+1 <- 0
+	CALL _strcmp_c
+	if (!STACK_0) then goto L_ProcessCommand_166
+//commands.h,440 :: 		ProcessGo();
+	CALL _ProcessGo
+//commands.h,442 :: 		SendConstLine(msg1); // Send "OK"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,444 :: 		return;
+	return
+//commands.h,445 :: 		}
+L_ProcessCommand_166:
+//commands.h,447 :: 		if (IsCommand(cmd21)) // Check if input is "stop"
+	FARG_strcmp_c+0 <- 0
+	FARG_strcmp_c+1 <- 0
+	CALL _strcmp_c
+	if (!STACK_0) then goto L_ProcessCommand_167
+//commands.h,449 :: 		ProcessStop();
+	CALL _ProcessStop
+//commands.h,451 :: 		SendConstLine(msg1); //Send "OK"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,453 :: 		return;
+	return
+//commands.h,454 :: 		}
+L_ProcessCommand_167:
+//commands.h,456 :: 		if (IsCommand(cmd23)) // Check if input is "screen 1"
+	FARG_strcmp_c+0 <- 0
+	FARG_strcmp_c+1 <- 0
+	CALL _strcmp_c
+	if (!STACK_0) then goto L_ProcessCommand_168
+//commands.h,458 :: 		DisplayScreen1();
+	CALL _DisplayScreen1
+//commands.h,460 :: 		SendConstLine(msg1); //Send "OK"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,462 :: 		return;
+	return
+//commands.h,463 :: 		}
+L_ProcessCommand_168:
+//commands.h,465 :: 		if (IsCommand(cmd24)) // Check if input is "screen 2"
+	FARG_strcmp_c+0 <- 0
+	FARG_strcmp_c+1 <- 0
+	CALL _strcmp_c
+	if (!STACK_0) then goto L_ProcessCommand_169
+//commands.h,467 :: 		DisplayScreen2();
+	CALL _DisplayScreen2
+//commands.h,469 :: 		SendConstLine(msg1); //Send "OK"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,471 :: 		return;
+	return
+//commands.h,472 :: 		}
+L_ProcessCommand_169:
+//commands.h,474 :: 		if (IsCommand(cmd25)) // Check if input is "ping"
+	FARG_strcmp_c+0 <- 0
+	FARG_strcmp_c+1 <- 0
+	CALL _strcmp_c
+	if (!STACK_0) then goto L_ProcessCommand_170
+//commands.h,476 :: 		SendConstLine(msg1); // Send "OK"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,478 :: 		return;
+	return
+//commands.h,479 :: 		}
+L_ProcessCommand_170:
+//commands.h,481 :: 		if (IsCommand(cmd26)) // Check if input is "communication test"
+	FARG_strcmp_c+0 <- 0
+	FARG_strcmp_c+1 <- 0
+	CALL _strcmp_c
+	if (!STACK_0) then goto L_ProcessCommand_171
+//commands.h,483 :: 		if (comm_test > 1)
+	if ( _comm_test <= 1) then goto L_ProcessCommand_172
+//commands.h,485 :: 		comm_test = 0;
+	_comm_test <- 0
+//commands.h,487 :: 		SendConstLine(msg3); // Send "Undefined Command"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,488 :: 		}
+	goto	L_ProcessCommand_173
+L_ProcessCommand_172:
+//commands.h,491 :: 		comm_test++;
+	_comm_test <-  _comm_test + 1
+	_comm_test <- _comm_test
+//commands.h,493 :: 		SendConstLine(msg1); //Send "OK"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,494 :: 		}
+L_ProcessCommand_173:
+//commands.h,496 :: 		return;
+	return
+//commands.h,497 :: 		}
+L_ProcessCommand_171:
+//commands.h,499 :: 		if (CommandStarts(cmd33)) // Check if input is "lcd1 x", where x is a string
+	FARG_str_starts_with+0 <- 0
+	FARG_str_starts_with+1 <- 0
+	CALL _str_starts_with
+	if (!STACK_0) then goto L_ProcessCommand_174
+//commands.h,501 :: 		for (t=5; b[t] != '\n' && (t-5)<16; t++)
+	_t <- 5
+L_ProcessCommand_175:
+	FSR <-  0 + _t
+	STACK_4 <- *FSR
+	if ( STACK_4 = 10) then goto L_ProcessCommand_176
+	STACK_4 <-  _t - 5
+	if ( STACK_4 >= 16) then goto L_ProcessCommand_176
+L1143_ex_L_ProcessCommand_176:
+//commands.h,503 :: 		lcd1[t-5] = b[t];
+	STACK_0 <-  _t - 5
+	STACK_4 <-  0 + STACK_0
+	FSR <-  0 + _t
+	STACK_0 <- *FSR
+	*STACK_4 <- STACK_0
+//commands.h,504 :: 		}
+L_ProcessCommand_177:
+//commands.h,501 :: 		for (t=5; b[t] != '\n' && (t-5)<16; t++)
+	_t <-  _t + 1
+	_t <- _t
+//commands.h,504 :: 		}
+	goto	L_ProcessCommand_175
+L_ProcessCommand_176:
+//commands.h,506 :: 		lcd1[t-5] = 0;
+	STACK_0 <-  _t - 5
+	STACK_0 <-  0 + STACK_0
+	*STACK_0 <- 0
+//commands.h,508 :: 		if (lcd_screen == 1) DisplayScreen1();
+	if ( _lcd_screen != 1) then goto L_ProcessCommand_180
+	CALL _DisplayScreen1
+L_ProcessCommand_180:
+//commands.h,510 :: 		SendConstLine(msg1); // Send "OK"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,512 :: 		return;
+	return
+//commands.h,513 :: 		}
+L_ProcessCommand_174:
+//commands.h,515 :: 		if (CommandStarts(cmd34)) // Check if input is "lcd2 x", where x is a string
+	FARG_str_starts_with+0 <- 0
+	FARG_str_starts_with+1 <- 0
+	CALL _str_starts_with
+	if (!STACK_0) then goto L_ProcessCommand_181
+//commands.h,517 :: 		for (t=5; b[t] != '\n' && (t-5)<16; t++)
+	_t <- 5
+L_ProcessCommand_182:
+	FSR <-  0 + _t
+	STACK_4 <- *FSR
+	if ( STACK_4 = 10) then goto L_ProcessCommand_183
+	STACK_4 <-  _t - 5
+	if ( STACK_4 >= 16) then goto L_ProcessCommand_183
+L1184_ex_L_ProcessCommand_183:
+//commands.h,519 :: 		lcd2[t-5] = b[t];
+	STACK_0 <-  _t - 5
+	STACK_4 <-  0 + STACK_0
+	FSR <-  0 + _t
+	STACK_0 <- *FSR
+	*STACK_4 <- STACK_0
+//commands.h,520 :: 		}
+L_ProcessCommand_184:
+//commands.h,517 :: 		for (t=5; b[t] != '\n' && (t-5)<16; t++)
+	_t <-  _t + 1
+	_t <- _t
+//commands.h,520 :: 		}
+	goto	L_ProcessCommand_182
+L_ProcessCommand_183:
+//commands.h,522 :: 		lcd2[t-5] = 0;
+	STACK_0 <-  _t - 5
+	STACK_0 <-  0 + STACK_0
+	*STACK_0 <- 0
+//commands.h,524 :: 		if (lcd_screen == 1) DisplayScreen1();
+	if ( _lcd_screen != 1) then goto L_ProcessCommand_187
+	CALL _DisplayScreen1
+L_ProcessCommand_187:
+//commands.h,526 :: 		SendConstLine(msg1); // Send "OK"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,528 :: 		return;
+	return
+//commands.h,529 :: 		}
+L_ProcessCommand_181:
+//commands.h,531 :: 		if (CommandStarts(cmd44)) // Check if input is "trace axis1"
+	FARG_str_starts_with+0 <- 0
+	FARG_str_starts_with+1 <- 0
+	CALL _str_starts_with
+	if (!STACK_0) then goto L_ProcessCommand_188
+//commands.h,533 :: 		trace_axis = 1;
+	_trace_axis <- 1
+//commands.h,535 :: 		SendConstLine(msg1); // Send "OK"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,537 :: 		return;
+	return
+//commands.h,538 :: 		}
+L_ProcessCommand_188:
+//commands.h,540 :: 		if (CommandStarts(cmd45)) // Check if input is "trace axis2"
+	FARG_str_starts_with+0 <- 0
+	FARG_str_starts_with+1 <- 0
+	CALL _str_starts_with
+	if (!STACK_0) then goto L_ProcessCommand_189
+//commands.h,542 :: 		trace_axis = 2;
+	_trace_axis <- 2
+//commands.h,544 :: 		SendConstLine(msg1); // Send "OK"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,546 :: 		return;
+	return
+//commands.h,547 :: 		}
+L_ProcessCommand_189:
+//commands.h,549 :: 		if (CommandStarts(cmd46)) // Check if input is "trace axis3"
+	FARG_str_starts_with+0 <- 0
+	FARG_str_starts_with+1 <- 0
+	CALL _str_starts_with
+	if (!STACK_0) then goto L_ProcessCommand_190
+//commands.h,551 :: 		trace_axis = 3;
+	_trace_axis <- 3
+//commands.h,553 :: 		SendConstLine(msg1); // Send "OK"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,555 :: 		return;
+	return
+//commands.h,556 :: 		}
+L_ProcessCommand_190:
+//commands.h,558 :: 		if (CommandStarts(cmd47)) // Check if input is "trace off"
+	FARG_str_starts_with+0 <- 0
+	FARG_str_starts_with+1 <- 0
+	CALL _str_starts_with
+	if (!STACK_0) then goto L_ProcessCommand_191
+//commands.h,560 :: 		trace_axis = 0;
+	_trace_axis <- 0
+//commands.h,562 :: 		SendConstLine(msg1); // Send "OK"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,564 :: 		return;
+	return
+//commands.h,565 :: 		}
+L_ProcessCommand_191:
+//commands.h,567 :: 		if (CommandStarts(cmd48)) // Check if input is "trace skip x", where x is a number
+	FARG_str_starts_with+0 <- 0
+	FARG_str_starts_with+1 <- 0
+	CALL _str_starts_with
+	if (!STACK_0) then goto L_ProcessCommand_192
+//commands.h,569 :: 		trace_skip = Extract_Numeric_Argument(11);
+	FARG_Extract_Numeric_Argument+0 <- 11
+	CALL _Extract_Numeric_Argument
+	_trace_skip <- STACK_0
+//commands.h,571 :: 		SendConstLine(msg1); // Send "OK"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,573 :: 		return;
+	return
+//commands.h,574 :: 		}
+L_ProcessCommand_192:
+//commands.h,576 :: 		if (CommandStarts(cmdxx)) // Check if input is "pr2 x", where x is a number
+	FARG_str_starts_with+0 <- 0
+	FARG_str_starts_with+1 <- 0
+	CALL _str_starts_with
+	if (!STACK_0) then goto L_ProcessCommand_193
+//commands.h,578 :: 		PR2_setting = Extract_Numeric_Argument(4);
+	FARG_Extract_Numeric_Argument+0 <- 4
+	CALL _Extract_Numeric_Argument
+	_PR2_setting <- STACK_0
+//commands.h,580 :: 		SendConstLine(msg1); // Send "OK"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//commands.h,582 :: 		return;
+	return
+//commands.h,583 :: 		}
+L_ProcessCommand_193:
+//commands.h,585 :: 		SendConstLine(msg3); // Send "Undefined Command"
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+  end
+
+_main:
+  begin
+//main.c,32 :: 		delay_ms(250); // 250ms delay before startup ...
+	asm: MOVLW	7
+	asm: MOVWF	STACK_12
+	asm: MOVLW	255
+	asm: MOVWF	STACK_11
+	asm: MOVLW	255
+	asm: MOVWF	STACK_10
+	asm: DECFSZ	STACK_12,F
+	asm: GOTO	$+2
+	asm: GOTO	$+8
+	asm: DECFSZ	STACK_11,F
+	asm: GOTO	$+2
+	asm: GOTO	$+4
+	asm: DECFSZ	STACK_10,F
+	asm: GOTO	$-1
+	asm: GOTO	$-5
+	asm: GOTO	$-9
+	asm: MOVLW	96
+	asm: MOVWF	STACK_11
+	asm: MOVLW	255
+	asm: MOVWF	STACK_10
+	asm: DECFSZ	STACK_11,F
+	asm: GOTO	$+2
+	asm: GOTO	$+4
+	asm: DECFSZ	STACK_10,F
+	asm: GOTO	$-1
+	asm: GOTO	$-5
+	asm: MOVLW	20
+	asm: MOVWF	STACK_10
+	asm: DECFSZ	STACK_10,F
+	asm: GOTO	$-1
+//main.c,34 :: 		IntializeController();
+	CALL _IntializeController
+//main.c,36 :: 		while (1)
+L_main_194:
+//main.c,38 :: 		if (Usart_Data_Ready())
+	CALL _Usart_Data_Ready
+	if (!STACK_0) then goto L_main_196
+//main.c,40 :: 		i = Usart_Read();
+	CALL _Usart_Read
+	_i <- STACK_0
+//main.c,42 :: 		Usart_Write(i);              // Echo character back to sender
+	FARG_Usart_Write+0 <- STACK_0
+	CALL _Usart_Write
+//main.c,44 :: 		if (ValidChar(i))            // If received character is valid, append to array
+	FARG_ValidChar+0 <- _i
+	CALL _ValidChar
+	if (!STACK_0) then goto L_main_197
+//main.c,46 :: 		b[b_i] = i;
+	STACK_0 <-  0 + _b_i
+	*STACK_0 <- _i
+//main.c,48 :: 		if (b_i<31) b_i++;
+	if ( _b_i >= 31) then goto L_main_198
+	_b_i <-  _b_i + 1
+	_b_i <- _b_i
+L_main_198:
+//main.c,49 :: 		}
+L_main_197:
+//main.c,51 :: 		if (i==13)                   // Check if Enter is received
+	if ( _i != 13) then goto L_main_199
+//main.c,53 :: 		b[b_i] = '\n';            // Append "New Line" character to command buffer
+	STACK_0 <-  0 + _b_i
+	*STACK_0 <- 10
+//main.c,55 :: 		Usart_Write(10);          // Send "Carriage Return" character
+	FARG_Usart_Write+0 <- 10
+	CALL _Usart_Write
+//main.c,57 :: 		ProcessCommand();         // Process received command
+	CALL _ProcessCommand
+//main.c,59 :: 		b_i=0;                    // Reset buffer index
+	_b_i <- 0
+//main.c,61 :: 		Prompt();
+	CALL _Prompt
+//main.c,62 :: 		}
+L_main_199:
+//main.c,64 :: 		CTS = ~CTS; // Toggle CTS
+	STACK_1 <-  PORTC & 32
+	STACK_0 <- 5
+	STACK_1 <-  STACK_1 shr STACK_0
+	STACK_0 <- ~STACK_1
+	PORTC <- setbit(STACK_0)
+//main.c,65 :: 		}
+L_main_196:
+//main.c,67 :: 		if (task_done_msg)
+	if (!_task_done_msg) then goto L_main_200
+//main.c,69 :: 		SendConstLine(newline);
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//main.c,71 :: 		SendConstLine(msg5);
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//main.c,73 :: 		Prompt();
+	CALL _Prompt
+//main.c,75 :: 		task_done_msg = 0;
+	_task_done_msg <- 0
+//main.c,76 :: 		}
+L_main_200:
+//main.c,78 :: 		if (trace_flag)
+	if (!_trace_flag) then goto L_main_201
+//main.c,80 :: 		Usart_Write(TRACE_CHAR);
+	FARG_Usart_Write+0 <- 64
+	CALL _Usart_Write
+//main.c,82 :: 		trace_flag = 0;
+	_trace_flag <- 0
+//main.c,83 :: 		}
+L_main_201:
+//main.c,84 :: 		}
+	goto	L_main_194
+  end
+
+_IntializeController:
+  begin
+//main.c,89 :: 		TRISB = 0;                            // LCD Data Port
+	TRISB <- 0
+//main.c,91 :: 		TRISD = 3;                            // LCD Control Port + Switch Bits
+	TRISD <- 3
+//main.c,93 :: 		TRISA = 0;                            // Output Port (Axis 1)
+	TRISA <- 0
+//main.c,95 :: 		TRISE = 0;                            // Output Port (Axis 2)
+	TRISE <- 0
+//main.c,97 :: 		TRISC = 0;                            // Output Port (Axis 3) + Serial Communication Bits
+	TRISC <- 0
+//main.c,99 :: 		AXIS1_ENABLE_BIT = 0; // Disable axis 1
+	_PORTA_V <-  _PORTA_V & -3
+//main.c,101 :: 		AXIS2_ENABLE_BIT = 0; // Disable axis 2
+	_PORTE_V <-  _PORTE_V & -3
+//main.c,103 :: 		AXIS3_ENABLE_BIT = 0; // Disable axis 3
+	PORTC <-  PORTC & -3
+//main.c,105 :: 		AXIS1_DIRECTION_BIT = 0; // Set direction of axis 1 to forward
+	_PORTA_V <-  _PORTA_V & -2
+//main.c,107 :: 		AXIS2_DIRECTION_BIT = 0; // Set direction of axis 2 to forward
+	_PORTE_V <-  _PORTE_V & -2
+//main.c,109 :: 		AXIS3_DIRECTION_BIT = 0; // Set direction of axis 3 to forward
+	PORTC <-  PORTC & -2
+//main.c,111 :: 		AXIS1_STEP_BIT = 1; // Initialize axis 1 step output to 1
+	_PORTA_V <-  _PORTA_V | 4
+//main.c,113 :: 		AXIS2_STEP_BIT = 1; // Initialize axis 2 step output to 1
+	_PORTE_V <-  _PORTE_V | 4
+//main.c,115 :: 		AXIS3_STEP_BIT = 1; // Initialize axis 3 step output to 1
+	PORTC <-  PORTC | 4
+//main.c,117 :: 		WriteVirtualPorts();
+	CALL _WriteVirtualPorts
+//main.c,119 :: 		delay_ms(50);
+	asm: MOVLW	2
+	asm: MOVWF	STACK_12
+	asm: MOVLW	255
+	asm: MOVWF	STACK_11
+	asm: MOVLW	255
+	asm: MOVWF	STACK_10
+	asm: DECFSZ	STACK_12,F
+	asm: GOTO	$+2
+	asm: GOTO	$+8
+	asm: DECFSZ	STACK_11,F
+	asm: GOTO	$+2
+	asm: GOTO	$+4
+	asm: DECFSZ	STACK_10,F
+	asm: GOTO	$-1
+	asm: GOTO	$-5
+	asm: GOTO	$-9
+	asm: MOVLW	70
+	asm: MOVWF	STACK_11
+	asm: MOVLW	255
+	asm: MOVWF	STACK_10
+	asm: DECFSZ	STACK_11,F
+	asm: GOTO	$+2
+	asm: GOTO	$+4
+	asm: DECFSZ	STACK_10,F
+	asm: GOTO	$-1
+	asm: GOTO	$-5
+	asm: MOVLW	207
+	asm: MOVWF	STACK_10
+	asm: DECFSZ	STACK_10,F
+	asm: GOTO	$-1
+	asm: nop
+//main.c,121 :: 		Intialize_LCD();
+	CALL _Intialize_LCD
+//main.c,123 :: 		DisplayScreen1();
+	CALL _DisplayScreen1
+//main.c,125 :: 		Usart_Init(BAUD_RATE);
+	SPBRG <- 4
+	asm: BSF	TXSTA, BRGH
+	CALL _Usart_Init
+//main.c,127 :: 		CTS = 0;
+	PORTC <-  PORTC & -33
+//main.c,131 :: 		SendConstLine(newline);
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//main.c,133 :: 		SendConstLine(newline);
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//main.c,135 :: 		SendConstLine(Banner1);
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//main.c,137 :: 		SendConstLine(Banner2);
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//main.c,139 :: 		SendConstLine(Banner3);
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//main.c,141 :: 		SendConstLine(Banner4);
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//main.c,143 :: 		SendConstLine(Banner5);
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//main.c,145 :: 		SendConstLine(newline);
+	FARG_SendConstLine+0 <- 0
+	CALL _SendConstLine
+//main.c,147 :: 		Prompt();
+	CALL _Prompt
+  end
+
+_Prompt:
+  begin
+//main.c,152 :: 		Usart_Write('>');
+	FARG_Usart_Write+0 <- 62
+	CALL _Usart_Write
+//main.c,154 :: 		Usart_Write('>');
+	FARG_Usart_Write+0 <- 62
+	CALL _Usart_Write
+  end
+
+table___lcd1_default:
+  begin
+//main.c,5 :: 		#define FIRMWARE_VERSION "2.0\n"
+	asm: RETLW	82
+	asm: RETLW	101
+	asm: RETLW	97
+	asm: RETLW	100
+	asm: RETLW	121
+	asm: RETLW	0
+  end
+
+table___lcd2_default:
+  begin
+//main.c,6 :: 		
+	asm: RETLW	32
+	asm: RETLW	0
+  end
+
+table___banner1:
+  begin
+//main.c,8 :: 		
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___banner2:
+  begin
+//main.c,9 :: 		#define TRACE_CHAR '@'
+	asm: RETLW	35
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	35
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___banner3:
+  begin
+//main.c,10 :: 		
+	asm: RETLW	35
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	77
+	asm: RETLW	117
+	asm: RETLW	108
+	asm: RETLW	116
+	asm: RETLW	105
+	asm: RETLW	45
+	asm: RETLW	65
+	asm: RETLW	120
+	asm: RETLW	105
+	asm: RETLW	115
+	asm: RETLW	32
+	asm: RETLW	83
+	asm: RETLW	116
+	asm: RETLW	101
+	asm: RETLW	112
+	asm: RETLW	112
+	asm: RETLW	101
+	asm: RETLW	114
+	asm: RETLW	32
+	asm: RETLW	77
+	asm: RETLW	111
+	asm: RETLW	116
+	asm: RETLW	111
+	asm: RETLW	114
+	asm: RETLW	32
+	asm: RETLW	67
+	asm: RETLW	111
+	asm: RETLW	110
+	asm: RETLW	116
+	asm: RETLW	114
+	asm: RETLW	111
+	asm: RETLW	108
+	asm: RETLW	108
+	asm: RETLW	101
+	asm: RETLW	114
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	35
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___banner4:
+  begin
+//main.c,11 :: 		#include "Pins.h"
+	asm: RETLW	35
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	32
+	asm: RETLW	35
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___banner5:
+  begin
+//main.c,12 :: 		
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	35
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___msg1:
+  begin
+//main.c,14 :: 		
+	asm: RETLW	79
+	asm: RETLW	75
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___msg2:
+  begin
+//main.c,15 :: 		#include "Strings.h"
+	asm: RETLW	65
+	asm: RETLW	98
+	asm: RETLW	111
+	asm: RETLW	114
+	asm: RETLW	116
+	asm: RETLW	101
+	asm: RETLW	100
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___msg3:
+  begin
+//main.c,16 :: 		
+	asm: RETLW	85
+	asm: RETLW	110
+	asm: RETLW	100
+	asm: RETLW	101
+	asm: RETLW	102
+	asm: RETLW	105
+	asm: RETLW	110
+	asm: RETLW	101
+	asm: RETLW	100
+	asm: RETLW	32
+	asm: RETLW	99
+	asm: RETLW	111
+	asm: RETLW	109
+	asm: RETLW	109
+	asm: RETLW	97
+	asm: RETLW	110
+	asm: RETLW	100
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___msg4:
+  begin
+//main.c,17 :: 		#include "Functions.h"
+	asm: RETLW	78
+	asm: RETLW	111
+	asm: RETLW	32
+	asm: RETLW	116
+	asm: RETLW	97
+	asm: RETLW	115
+	asm: RETLW	107
+	asm: RETLW	32
+	asm: RETLW	114
+	asm: RETLW	117
+	asm: RETLW	110
+	asm: RETLW	110
+	asm: RETLW	105
+	asm: RETLW	110
+	asm: RETLW	103
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___msg5:
+  begin
+//main.c,18 :: 		
+	asm: RETLW	84
+	asm: RETLW	97
+	asm: RETLW	115
+	asm: RETLW	107
+	asm: RETLW	32
+	asm: RETLW	99
+	asm: RETLW	111
+	asm: RETLW	109
+	asm: RETLW	112
+	asm: RETLW	108
+	asm: RETLW	101
+	asm: RETLW	116
+	asm: RETLW	101
+	asm: RETLW	100
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___cmd1:
+  begin
+//main.c,20 :: 		
+	asm: RETLW	97
+	asm: RETLW	120
+	asm: RETLW	105
+	asm: RETLW	115
+	asm: RETLW	49
+	asm: RETLW	32
+	asm: RETLW	43
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___cmd2:
+  begin
+//main.c,21 :: 		#include "Go.h"
+	asm: RETLW	97
+	asm: RETLW	120
+	asm: RETLW	105
+	asm: RETLW	115
+	asm: RETLW	49
+	asm: RETLW	32
+	asm: RETLW	45
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___cmd3:
+  begin
+//main.c,22 :: 		
+	asm: RETLW	97
+	asm: RETLW	120
+	asm: RETLW	105
+	asm: RETLW	115
+	asm: RETLW	49
+	asm: RETLW	32
+	asm: RETLW	111
+	asm: RETLW	110
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___cmd4:
+  begin
+//main.c,23 :: 		#include "Commands.h"
+	asm: RETLW	97
+	asm: RETLW	120
+	asm: RETLW	105
+	asm: RETLW	115
+	asm: RETLW	49
+	asm: RETLW	32
+	asm: RETLW	111
+	asm: RETLW	102
+	asm: RETLW	102
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___cmd5:
+  begin
+//main.c,24 :: 		
+	asm: RETLW	97
+	asm: RETLW	120
+	asm: RETLW	105
+	asm: RETLW	115
+	asm: RETLW	49
+	asm: RETLW	32
+	asm: RETLW	115
+	asm: RETLW	116
+	asm: RETLW	101
+	asm: RETLW	112
+	asm: RETLW	115
+	asm: RETLW	32
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___cmd6:
+  begin
+//main.c,25 :: 		void IntializeController();
+	asm: RETLW	97
+	asm: RETLW	120
+	asm: RETLW	105
+	asm: RETLW	115
+	asm: RETLW	49
+	asm: RETLW	32
+	asm: RETLW	112
+	asm: RETLW	101
+	asm: RETLW	114
+	asm: RETLW	105
+	asm: RETLW	111
+	asm: RETLW	100
+	asm: RETLW	32
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___cmd7:
+  begin
+//main.c,27 :: 		void Prompt();
+	asm: RETLW	97
+	asm: RETLW	120
+	asm: RETLW	105
+	asm: RETLW	115
+	asm: RETLW	50
+	asm: RETLW	32
+	asm: RETLW	43
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___cmd8:
+  begin
+//main.c,28 :: 		
+	asm: RETLW	97
+	asm: RETLW	120
+	asm: RETLW	105
+	asm: RETLW	115
+	asm: RETLW	50
+	asm: RETLW	32
+	asm: RETLW	45
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___cmd9:
+  begin
+//main.c,29 :: 		void main()
+	asm: RETLW	97
+	asm: RETLW	120
+	asm: RETLW	105
+	asm: RETLW	115
+	asm: RETLW	50
+	asm: RETLW	32
+	asm: RETLW	111
+	asm: RETLW	110
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___cmd10:
+  begin
+//main.c,30 :: 		{
+	asm: RETLW	97
+	asm: RETLW	120
+	asm: RETLW	105
+	asm: RETLW	115
+	asm: RETLW	50
+	asm: RETLW	32
+	asm: RETLW	111
+	asm: RETLW	102
+	asm: RETLW	102
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___cmd11:
+  begin
+//main.c,31 :: 		
+	asm: RETLW	97
+	asm: RETLW	120
+	asm: RETLW	105
+	asm: RETLW	115
+	asm: RETLW	50
+	asm: RETLW	32
+	asm: RETLW	115
+	asm: RETLW	116
+	asm: RETLW	101
+	asm: RETLW	112
+	asm: RETLW	115
+	asm: RETLW	32
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___cmd12:
+  begin
+//main.c,32 :: 		delay_ms(250); // 250ms delay before startup ...
+	asm: RETLW	97
+	asm: RETLW	120
+	asm: RETLW	105
+	asm: RETLW	115
+	asm: RETLW	50
+	asm: RETLW	32
+	asm: RETLW	112
+	asm: RETLW	101
+	asm: RETLW	114
+	asm: RETLW	105
+	asm: RETLW	111
+	asm: RETLW	100
+	asm: RETLW	32
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___cmd13:
+  begin
+//main.c,34 :: 		IntializeController();
+	asm: RETLW	97
+	asm: RETLW	120
+	asm: RETLW	105
+	asm: RETLW	115
+	asm: RETLW	51
+	asm: RETLW	32
+	asm: RETLW	43
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___cmd14:
+  begin
+//main.c,35 :: 		
+	asm: RETLW	97
+	asm: RETLW	120
+	asm: RETLW	105
+	asm: RETLW	115
+	asm: RETLW	51
+	asm: RETLW	32
+	asm: RETLW	45
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___cmd15:
+  begin
+//main.c,36 :: 		while (1)
+	asm: RETLW	97
+	asm: RETLW	120
+	asm: RETLW	105
+	asm: RETLW	115
+	asm: RETLW	51
+	asm: RETLW	32
+	asm: RETLW	111
+	asm: RETLW	110
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___cmd16:
+  begin
+//main.c,37 :: 		{
+	asm: RETLW	97
+	asm: RETLW	120
+	asm: RETLW	105
+	asm: RETLW	115
+	asm: RETLW	51
+	asm: RETLW	32
+	asm: RETLW	111
+	asm: RETLW	102
+	asm: RETLW	102
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___cmd17:
+  begin
+//main.c,38 :: 		if (Usart_Data_Ready())
+	asm: RETLW	97
+	asm: RETLW	120
+	asm: RETLW	105
+	asm: RETLW	115
+	asm: RETLW	51
+	asm: RETLW	32
+	asm: RETLW	115
+	asm: RETLW	116
+	asm: RETLW	101
+	asm: RETLW	112
+	asm: RETLW	115
+	asm: RETLW	32
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___cmd18:
+  begin
+//main.c,39 :: 		{
+	asm: RETLW	97
+	asm: RETLW	120
+	asm: RETLW	105
+	asm: RETLW	115
+	asm: RETLW	51
+	asm: RETLW	32
+	asm: RETLW	112
+	asm: RETLW	101
+	asm: RETLW	114
+	asm: RETLW	105
+	asm: RETLW	111
+	asm: RETLW	100
+	asm: RETLW	32
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___cmd19:
+  begin
+//main.c,41 :: 		
+	asm: RETLW	103
+	asm: RETLW	111
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___cmd20:
+  begin
+//main.c,43 :: 		
+	asm: RETLW	118
+	asm: RETLW	101
+	asm: RETLW	114
+	asm: RETLW	115
+	asm: RETLW	105
+	asm: RETLW	111
+	asm: RETLW	110
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___cmd21:
+  begin
+//main.c,45 :: 		{
+	asm: RETLW	115
+	asm: RETLW	116
+	asm: RETLW	111
+	asm: RETLW	112
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___cmd23:
+  begin
+//main.c,47 :: 		
+	asm: RETLW	115
+	asm: RETLW	99
+	asm: RETLW	114
+	asm: RETLW	101
+	asm: RETLW	101
+	asm: RETLW	110
+	asm: RETLW	32
+	asm: RETLW	49
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___cmd24:
+  begin
+//main.c,48 :: 		if (b_i<31) b_i++;
+	asm: RETLW	115
+	asm: RETLW	99
+	asm: RETLW	114
+	asm: RETLW	101
+	asm: RETLW	101
+	asm: RETLW	110
+	asm: RETLW	32
+	asm: RETLW	50
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___cmd25:
+  begin
+//main.c,50 :: 		
+	asm: RETLW	112
+	asm: RETLW	105
+	asm: RETLW	110
+	asm: RETLW	103
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___cmd26:
+  begin
+//main.c,51 :: 		if (i==13)                   // Check if Enter is received
+	asm: RETLW	99
+	asm: RETLW	111
+	asm: RETLW	109
+	asm: RETLW	109
+	asm: RETLW	117
+	asm: RETLW	110
+	asm: RETLW	105
+	asm: RETLW	99
+	asm: RETLW	97
+	asm: RETLW	116
+	asm: RETLW	105
+	asm: RETLW	111
+	asm: RETLW	110
+	asm: RETLW	32
+	asm: RETLW	116
+	asm: RETLW	101
+	asm: RETLW	115
+	asm: RETLW	116
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___cmd27:
+  begin
+//main.c,53 :: 		b[b_i] = '\n';            // Append "New Line" character to command buffer
+	asm: RETLW	97
+	asm: RETLW	120
+	asm: RETLW	105
+	asm: RETLW	115
+	asm: RETLW	49
+	asm: RETLW	32
+	asm: RETLW	115
+	asm: RETLW	116
+	asm: RETLW	101
+	asm: RETLW	112
+	asm: RETLW	115
+	asm: RETLW	32
+	asm: RETLW	115
+	asm: RETLW	119
+	asm: RETLW	105
+	asm: RETLW	116
+	asm: RETLW	99
+	asm: RETLW	104
+	asm: RETLW	49
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___cmd28:
+  begin
+//main.c,54 :: 		
+	asm: RETLW	97
+	asm: RETLW	120
+	asm: RETLW	105
+	asm: RETLW	115
+	asm: RETLW	49
+	asm: RETLW	32
+	asm: RETLW	115
+	asm: RETLW	116
+	asm: RETLW	101
+	asm: RETLW	112
+	asm: RETLW	115
+	asm: RETLW	32
+	asm: RETLW	115
+	asm: RETLW	119
+	asm: RETLW	105
+	asm: RETLW	116
+	asm: RETLW	99
+	asm: RETLW	104
+	asm: RETLW	50
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___cmd29:
+  begin
+//main.c,56 :: 		
+	asm: RETLW	97
+	asm: RETLW	120
+	asm: RETLW	105
+	asm: RETLW	115
+	asm: RETLW	50
+	asm: RETLW	32
+	asm: RETLW	115
+	asm: RETLW	116
+	asm: RETLW	101
+	asm: RETLW	112
+	asm: RETLW	115
+	asm: RETLW	32
+	asm: RETLW	115
+	asm: RETLW	119
+	asm: RETLW	105
+	asm: RETLW	116
+	asm: RETLW	99
+	asm: RETLW	104
+	asm: RETLW	49
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___cmd30:
+  begin
+//main.c,57 :: 		ProcessCommand();         // Process received command
+	asm: RETLW	97
+	asm: RETLW	120
+	asm: RETLW	105
+	asm: RETLW	115
+	asm: RETLW	50
+	asm: RETLW	32
+	asm: RETLW	115
+	asm: RETLW	116
+	asm: RETLW	101
+	asm: RETLW	112
+	asm: RETLW	115
+	asm: RETLW	32
+	asm: RETLW	115
+	asm: RETLW	119
+	asm: RETLW	105
+	asm: RETLW	116
+	asm: RETLW	99
+	asm: RETLW	104
+	asm: RETLW	50
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___cmd31:
+  begin
+//main.c,59 :: 		b_i=0;                    // Reset buffer index
+	asm: RETLW	97
+	asm: RETLW	120
+	asm: RETLW	105
+	asm: RETLW	115
+	asm: RETLW	51
+	asm: RETLW	32
+	asm: RETLW	115
+	asm: RETLW	116
+	asm: RETLW	101
+	asm: RETLW	112
+	asm: RETLW	115
+	asm: RETLW	32
+	asm: RETLW	115
+	asm: RETLW	119
+	asm: RETLW	105
+	asm: RETLW	116
+	asm: RETLW	99
+	asm: RETLW	104
+	asm: RETLW	49
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___cmd32:
+  begin
+//main.c,60 :: 		
+	asm: RETLW	97
+	asm: RETLW	120
+	asm: RETLW	105
+	asm: RETLW	115
+	asm: RETLW	51
+	asm: RETLW	32
+	asm: RETLW	115
+	asm: RETLW	116
+	asm: RETLW	101
+	asm: RETLW	112
+	asm: RETLW	115
+	asm: RETLW	32
+	asm: RETLW	115
+	asm: RETLW	119
+	asm: RETLW	105
+	asm: RETLW	116
+	asm: RETLW	99
+	asm: RETLW	104
+	asm: RETLW	50
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___cmd33:
+  begin
+//main.c,62 :: 		}
+	asm: RETLW	108
+	asm: RETLW	99
+	asm: RETLW	100
+	asm: RETLW	49
+	asm: RETLW	32
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___cmd34:
+  begin
+//main.c,63 :: 		
+	asm: RETLW	108
+	asm: RETLW	99
+	asm: RETLW	100
+	asm: RETLW	50
+	asm: RETLW	32
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___cmd35:
+  begin
+//main.c,65 :: 		}
+	asm: RETLW	97
+	asm: RETLW	120
+	asm: RETLW	105
+	asm: RETLW	115
+	asm: RETLW	49
+	asm: RETLW	32
+	asm: RETLW	112
+	asm: RETLW	101
+	asm: RETLW	114
+	asm: RETLW	105
+	asm: RETLW	111
+	asm: RETLW	100
+	asm: RETLW	32
+	asm: RETLW	115
+	asm: RETLW	116
+	asm: RETLW	97
+	asm: RETLW	114
+	asm: RETLW	116
+	asm: RETLW	32
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___cmd36:
+  begin
+//main.c,66 :: 		
+	asm: RETLW	97
+	asm: RETLW	120
+	asm: RETLW	105
+	asm: RETLW	115
+	asm: RETLW	49
+	asm: RETLW	32
+	asm: RETLW	112
+	asm: RETLW	101
+	asm: RETLW	114
+	asm: RETLW	105
+	asm: RETLW	111
+	asm: RETLW	100
+	asm: RETLW	32
+	asm: RETLW	101
+	asm: RETLW	110
+	asm: RETLW	100
+	asm: RETLW	32
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___cmd37:
+  begin
+//main.c,67 :: 		if (task_done_msg)
+	asm: RETLW	97
+	asm: RETLW	120
+	asm: RETLW	105
+	asm: RETLW	115
+	asm: RETLW	49
+	asm: RETLW	32
+	asm: RETLW	112
+	asm: RETLW	101
+	asm: RETLW	114
+	asm: RETLW	105
+	asm: RETLW	111
+	asm: RETLW	100
+	asm: RETLW	32
+	asm: RETLW	119
+	asm: RETLW	97
+	asm: RETLW	114
+	asm: RETLW	109
+	asm: RETLW	117
+	asm: RETLW	112
+	asm: RETLW	32
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___cmd38:
+  begin
+//main.c,69 :: 		SendConstLine(newline);
+	asm: RETLW	97
+	asm: RETLW	120
+	asm: RETLW	105
+	asm: RETLW	115
+	asm: RETLW	50
+	asm: RETLW	32
+	asm: RETLW	112
+	asm: RETLW	101
+	asm: RETLW	114
+	asm: RETLW	105
+	asm: RETLW	111
+	asm: RETLW	100
+	asm: RETLW	32
+	asm: RETLW	115
+	asm: RETLW	116
+	asm: RETLW	97
+	asm: RETLW	114
+	asm: RETLW	116
+	asm: RETLW	32
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___cmd39:
+  begin
+//main.c,70 :: 		
+	asm: RETLW	97
+	asm: RETLW	120
+	asm: RETLW	105
+	asm: RETLW	115
+	asm: RETLW	50
+	asm: RETLW	32
+	asm: RETLW	112
+	asm: RETLW	101
+	asm: RETLW	114
+	asm: RETLW	105
+	asm: RETLW	111
+	asm: RETLW	100
+	asm: RETLW	32
+	asm: RETLW	101
+	asm: RETLW	110
+	asm: RETLW	100
+	asm: RETLW	32
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___cmd40:
+  begin
+//main.c,71 :: 		SendConstLine(msg5);
+	asm: RETLW	97
+	asm: RETLW	120
+	asm: RETLW	105
+	asm: RETLW	115
+	asm: RETLW	50
+	asm: RETLW	32
+	asm: RETLW	112
+	asm: RETLW	101
+	asm: RETLW	114
+	asm: RETLW	105
+	asm: RETLW	111
+	asm: RETLW	100
+	asm: RETLW	32
+	asm: RETLW	119
+	asm: RETLW	97
+	asm: RETLW	114
+	asm: RETLW	109
+	asm: RETLW	117
+	asm: RETLW	112
+	asm: RETLW	32
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___cmd41:
+  begin
+//main.c,73 :: 		Prompt();
+	asm: RETLW	97
+	asm: RETLW	120
+	asm: RETLW	105
+	asm: RETLW	115
+	asm: RETLW	51
+	asm: RETLW	32
+	asm: RETLW	112
+	asm: RETLW	101
+	asm: RETLW	114
+	asm: RETLW	105
+	asm: RETLW	111
+	asm: RETLW	100
+	asm: RETLW	32
+	asm: RETLW	115
+	asm: RETLW	116
+	asm: RETLW	97
+	asm: RETLW	114
+	asm: RETLW	116
+	asm: RETLW	32
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___cmd42:
+  begin
+//main.c,74 :: 		
+	asm: RETLW	97
+	asm: RETLW	120
+	asm: RETLW	105
+	asm: RETLW	115
+	asm: RETLW	51
+	asm: RETLW	32
+	asm: RETLW	112
+	asm: RETLW	101
+	asm: RETLW	114
+	asm: RETLW	105
+	asm: RETLW	111
+	asm: RETLW	100
+	asm: RETLW	32
+	asm: RETLW	101
+	asm: RETLW	110
+	asm: RETLW	100
+	asm: RETLW	32
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___cmd43:
+  begin
+//main.c,75 :: 		task_done_msg = 0;
+	asm: RETLW	97
+	asm: RETLW	120
+	asm: RETLW	105
+	asm: RETLW	115
+	asm: RETLW	51
+	asm: RETLW	32
+	asm: RETLW	112
+	asm: RETLW	101
+	asm: RETLW	114
+	asm: RETLW	105
+	asm: RETLW	111
+	asm: RETLW	100
+	asm: RETLW	32
+	asm: RETLW	119
+	asm: RETLW	97
+	asm: RETLW	114
+	asm: RETLW	109
+	asm: RETLW	117
+	asm: RETLW	112
+	asm: RETLW	32
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___cmd44:
+  begin
+//main.c,77 :: 		
+	asm: RETLW	116
+	asm: RETLW	114
+	asm: RETLW	97
+	asm: RETLW	99
+	asm: RETLW	101
+	asm: RETLW	32
+	asm: RETLW	97
+	asm: RETLW	120
+	asm: RETLW	105
+	asm: RETLW	115
+	asm: RETLW	49
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___cmd45:
+  begin
+//main.c,78 :: 		if (trace_flag)
+	asm: RETLW	116
+	asm: RETLW	114
+	asm: RETLW	97
+	asm: RETLW	99
+	asm: RETLW	101
+	asm: RETLW	32
+	asm: RETLW	97
+	asm: RETLW	120
+	asm: RETLW	105
+	asm: RETLW	115
+	asm: RETLW	50
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___cmd46:
+  begin
+//main.c,79 :: 		{
+	asm: RETLW	116
+	asm: RETLW	114
+	asm: RETLW	97
+	asm: RETLW	99
+	asm: RETLW	101
+	asm: RETLW	32
+	asm: RETLW	97
+	asm: RETLW	120
+	asm: RETLW	105
+	asm: RETLW	115
+	asm: RETLW	51
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___cmd47:
+  begin
+//main.c,80 :: 		Usart_Write(TRACE_CHAR);
+	asm: RETLW	116
+	asm: RETLW	114
+	asm: RETLW	97
+	asm: RETLW	99
+	asm: RETLW	101
+	asm: RETLW	32
+	asm: RETLW	111
+	asm: RETLW	102
+	asm: RETLW	102
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___cmd48:
+  begin
+//main.c,81 :: 		
+	asm: RETLW	116
+	asm: RETLW	114
+	asm: RETLW	97
+	asm: RETLW	99
+	asm: RETLW	101
+	asm: RETLW	32
+	asm: RETLW	115
+	asm: RETLW	107
+	asm: RETLW	105
+	asm: RETLW	112
+	asm: RETLW	32
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___cmdxx:
+  begin
+//main.c,83 :: 		}
+	asm: RETLW	112
+	asm: RETLW	114
+	asm: RETLW	50
+	asm: RETLW	32
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table___newline:
+  begin
+//main.c,85 :: 		}
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+table__lstr_1_commands:
+  begin
+//main.c,-1 :: 		unresolved line
+	asm: RETLW	50
+	asm: RETLW	46
+	asm: RETLW	48
+	asm: RETLW	10
+	asm: RETLW	0
+  end
+
+GlobalInimain:
+  begin
+  end
+

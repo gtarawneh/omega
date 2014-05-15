@@ -1,0 +1,42 @@
+[DeviceName]
+Value=P16F877
+[DeviceClock]
+Value=20
+[MainUnit]
+Value=Driver.c
+[DeviceFlags]
+Count=3
+Value0=_LVP_OFF = $3F7F
+Value1=_WDT_OFF = $3FFB
+Value2=_HS_OSC = $3FFE
+[BuildType]
+bType=0
+[ProjectFiles]
+Count=1
+Value0=main.c
+[HeaderFiles]
+Count=7
+Value0=R:\Test1\Functions.h
+Value1=R:\Micrcontroller Driver\Commands.h
+Value2=R:\Micrcontroller Driver\Go.h
+Value3=R:\Micrcontroller Driver\Pins.h
+Value4=R:\Micrcontroller Driver\Strings.h
+Value5=R:\Micrcontroller Driver\Vars.h
+Value6=R:\Micrcontroller Driver\LCD.h
+[ObjLibFiles]
+Count=0
+[EEPROMinfo]
+isused=0
+[SearchPath]
+Count=7
+Value0=C:\Program Files\Mikroelektronika\mikroC\Defs\
+Value1=C:\Program Files\Mikroelektronika\mikroC\Uses\p16\
+Value2=D:\My Projects\Stepper Motor Controller\Micrcontroller Driver\
+Value3=R:\Micrcontroller Driver\
+Value4=R:\Driver\
+Value5=R:\Test1\
+Value6=C:\Documents and Settings\Ghaith\Desktop\Test1\
+[IncludePath]
+Count=0
+[PLDFiles]
+Count=0
